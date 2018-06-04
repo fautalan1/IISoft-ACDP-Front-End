@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import request from 'superagent'
 import './App.css';
-import 'semantic-ui-css/semantic.min.css';
-import SidebarLeftPush from '../src/components/SidebarLeftPush';
+import SidebarCategories from '../src/components/SidebarCategories';
+import MenuTop from '../src/components/MenuTop';
+import CategoriesPublicationList from '../src/components/CategoriesPublicationList';
+import PublicationComentaries from '../src/components/PublicationComentaries';
+import { Grid, GridColumn, GridRow} from 'semantic-ui-react';
 
 class App extends Component {
  constructor(){
@@ -27,18 +30,27 @@ class App extends Component {
 
   }
   
-  /* 
-  <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Bienvenido Diego</h1>
-        </header>
-          <h1>Ella es mi querida: {this.state.user}</h1> */
-  
   render() {
     return (
-      
-          <SidebarLeftPush/>
-        
+      <Grid>
+        <GridRow>
+          <GridColumn floated='right'>
+            <img src="UNQ Black Logo.png" alt="UNQ Black Logo"></img>
+          </GridColumn>
+          <GridColumn width='14'>
+            <MenuTop/>
+          </GridColumn>
+        </GridRow>
+        <GridRow>
+          <GridColumn width='2' >
+            <SidebarCategories/>
+          </GridColumn>
+          <GridColumn width='14'>
+            {/* <CategoriesPublicationList/>  */}
+            <PublicationComentaries/>
+          </GridColumn>
+        </GridRow>
+      </Grid>
     );
   }
 }
