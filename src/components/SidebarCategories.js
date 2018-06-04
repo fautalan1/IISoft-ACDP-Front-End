@@ -1,12 +1,13 @@
 import request from 'superagent'
 import React, { Component } from 'react'
-import { Sidebar, Menu} from 'semantic-ui-react'
+import {Menu} from 'semantic-ui-react'
 
-class SidebarLeftPush extends Component {
+class SidebarCategories extends Component {
 
   constructor(){
     super();
     this.state ={
+      categorySelected: "",
       categories: []
     }
   }
@@ -30,22 +31,20 @@ class SidebarLeftPush extends Component {
 
   menuItem(){ return this.state.categories.forEach((each)=> <Menu.Item> {each.name} </Menu.Item>) }
 
+  handleCategoryClick = (e, {name}) => ( e ) //TODO: Deberia realizar la accion  de traerse las publicaciones de la categoria para mostrarlas
   
-
   render() {
 
+    const { activeCategory } = this.state
+
     return (
-      <div>
-          <Sidebar as={Menu} animation='push' width='thin' visible={true} icon='labeled' vertical inverted>
-
-           <ul>
-                {this.state.categories.map(x => <li key= {x.id} ><Menu.Item> {x.name} </Menu.Item></li>)}
-           </ul>
-          </Sidebar>
-
-      </div>
+      <Menu fluid vertical inverted>
+          <ul>
+            {this.state.categories.map(x => <li key= {x.id} ><Menu.Item active={activeCategory === x.name} onClick={this.handleCategoryClick}> {x.name} </Menu.Item></li>)}
+          </ul>
+      </Menu>
     )
   }
 }
 
-export default SidebarLeftPush
+export default SidebarCategories
