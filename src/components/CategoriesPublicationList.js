@@ -1,64 +1,60 @@
-import React from 'react'
-import { List, Image } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { List } from 'semantic-ui-react';
+import categoriesPublicationsAPI from '../apiCategoriesPublications'
 
-const CategoriesPublicationList = (publicationList) => (
-  <List inverted>
-    <List.Item>
-      <Image avatar src='/assets/images/avatar/small/rachel.png' />
-      <List.Content>
-        <List.Header as='a'>Titulo de la Publicacion</List.Header>
-        <List.Description>
-          Creado por {' '} <a>Autor</a>{' '}.
-        </List.Description>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-      <Image avatar src='/assets/images/avatar/small/lindsay.png' />
-      <List.Content>
-        <List.Header as='a'>Lindsay</List.Header>
-        <List.Description>
-          Last seen watching{' '}
-          <a>
-            <b>Bob's Burgers</b>
-          </a>{' '}
-          10 hours ago.
-        </List.Description>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-      <Image avatar src='/assets/images/avatar/small/matthew.png' />
-      <List.Content>
-        <List.Header as='a'>Matthew</List.Header>
-        <List.Description>
-          Last seen watching{' '}
-          <a>
-            <b>The Godfather Part 2</b>
-          </a>{' '}
-          yesterday.
-        </List.Description>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-      <Image avatar src='/assets/images/avatar/small/jenny.jpg' />
-      <List.Content>
-        <List.Header as='a'>Jenny Hess</List.Header>
-        <List.Description>
-          Last seen watching{' '}
-          <a>
-            <b>Twin Peaks</b>
-          </a>{' '}
-          3 days ago.
-        </List.Description>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-      <Image avatar src='/assets/images/avatar/small/veronika.jpg' />
-      <List.Content>
-        <List.Header as='a'>Veronika Ossi</List.Header>
-        <List.Description>Has not watched anything recently</List.Description>
-      </List.Content>
-    </List.Item>
-  </List>
-)
+
+class CategoriesPublicationList extends Component {
+
+  constructor(categoryID){
+    super();
+    this.state ={
+      category: "",
+      publication: []
+    }
+  }
+
+  componentDidMount(){
+
+    this.publication = categoriesPublicationsAPI.get(2)
+    this.setState({publication : this.publication})
+    /* request
+    .get('http://localhost:8080/categories')
+    .then(res => {
+      
+      let categoriesbase = JSON.parse(res.text)
+      console.log(categoriesbase)
+      this.setState({
+        categories : categoriesbase
+      })
+    })
+    .catch((err) => {
+       alert(err)
+    }); */
+
+  }
+
+  render() {
+
+    return (
+      <List>
+        {
+          this.state.publication.map(x => 
+                                          <List.Item>
+                                            <List.Content>
+                                              <List.Header as='a'>{x.title}</List.Header>
+                                              <List.Description>
+                                                Creado por {' '} <a>{x.whoPublishedIt}</a>{' '}.
+                                              </List.Description>
+                                              <List.Description>{x.date}.</List.Description>
+                                            </List.Content>
+                                          </List.Item>
+                                    )
+        }
+      </List>
+      
+    )
+  }
+  
+}
 
 export default CategoriesPublicationList
