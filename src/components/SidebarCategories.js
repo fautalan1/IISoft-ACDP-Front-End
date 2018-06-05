@@ -1,8 +1,8 @@
 import request from 'superagent'
 import React, { Component } from 'react'
-import {Menu} from 'semantic-ui-react'
+import {Menu, MenuItem} from 'semantic-ui-react'
 
-class SidebarCategories extends Component {
+export default class SidebarCategories extends Component {
 
   constructor(){
     super();
@@ -29,7 +29,7 @@ class SidebarCategories extends Component {
 
   }
 
-  menuItem(){ return this.state.categories.forEach((each)=> <Menu.Item> {each.name} </Menu.Item>) }
+  /* menuItem(){ return this.state.categories.forEach((each)=> <Menu.Item> {each.name} </Menu.Item>) } */
 
   handleCategoryClick = (e, {name}) => ( e ) //TODO: Deberia realizar la accion  de traerse las publicaciones de la categoria para mostrarlas
   
@@ -39,12 +39,12 @@ class SidebarCategories extends Component {
 
     return (
       <Menu fluid vertical inverted>
-          <ul>
+        <MenuItem name='Categorias' header />
+        {this.state.categories.map(x => <Menu.Item active={activeCategory === x.id} onClick={this.handleCategoryClick}> {x.name} </Menu.Item>)}
+          {/* <ul>
             {this.state.categories.map(x => <li key= {x.id} ><Menu.Item active={activeCategory === x.name} onClick={this.handleCategoryClick}> {x.name} </Menu.Item></li>)}
-          </ul>
+          </ul> */}
       </Menu>
     )
   }
 }
-
-export default SidebarCategories

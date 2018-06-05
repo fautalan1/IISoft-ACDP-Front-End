@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
 
+/*TODO: Es una base, no tiene funcionalidad ni nada.*/
 const PublicationComentaries = () => (
   <Segment inverted>
   <Comment.Group>

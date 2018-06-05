@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import request from 'superagent'
 import './App.css';
 import SidebarCategories from '../src/components/SidebarCategories';
-import MenuTop from '../src/components/MenuTop';
+import Header from '../src/components/Header';
+import Main from '../src/components/Main';
 import CategoriesPublicationList from '../src/components/CategoriesPublicationList';
-import PublicationComentaries from '../src/components/PublicationComentaries';
-import { Grid, GridColumn, GridRow} from 'semantic-ui-react';
+import { Grid, GridColumn} from 'semantic-ui-react';
 
 class App extends Component {
  constructor(){
@@ -32,25 +32,19 @@ class App extends Component {
   
   render() {
     return (
-      <Grid>
-        <GridRow>
-          <GridColumn floated='right'>
-            <img src="UNQ Black Logo.png" alt="UNQ Black Logo"></img>
-          </GridColumn>
-          <GridColumn width='14'>
-            <MenuTop/>
-          </GridColumn>
-        </GridRow>
-        <GridRow>
-          <GridColumn width='2' >
+      <div>
+        <Header />
+        <Grid stretched>
+          <GridColumn style={{width: '15%', height:'100vh'}}>
             <SidebarCategories/>
           </GridColumn>
-          <GridColumn width='14'>
-            {/* <CategoriesPublicationList/>  */}
-            <PublicationComentaries/>
+          <GridColumn style={{width: '85%', height:'100vh'}}>
+             {/*TODO: el Categories Publication List deberia ser puesto por un ruote dentro del tag main  */}
+            <CategoriesPublicationList/>
+            <Main />
           </GridColumn>
-        </GridRow>
-      </Grid>
+        </Grid>
+      </div>
     );
   }
 }
