@@ -31,11 +31,9 @@ export default class SidebarCategories extends Component {
 
   xxx(aIdCategory){
     //Esto lo deberia hacer el padre pero al no tener una forma de pasarle el id use esto.
-    this.props.onClick.onClick.padre.setState({
-      idCategoria: aIdCategory
-    })
-
-    this.props.onClick.onClick.f(aIdCategory)
+    console.log("Este es el id:" + aIdCategory)
+    console.log(this.props)
+    this.props.onClick(aIdCategory) 
   }
 
   
@@ -51,11 +49,10 @@ export default class SidebarCategories extends Component {
           {
             
             this.state.categories.map(aCategory => 
-              <Menu.Item  key={aCategory.id} active={activeCategory === aCategory.id} onClick={()=> this.xxx(aCategory.id) } > 
+              <Menu.Item  key={aCategory.id} 
+                          active={activeCategory === aCategory.id}
+                          onClick={()=> this.xxx(aCategory.id)}> 
               {aCategory.name} 
-              <div style={{width: '15%', height:'100%'}}>
-                {this.state.viewPublication}
-              </div>
               </Menu.Item>)
           }
         </Menu>

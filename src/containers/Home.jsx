@@ -19,76 +19,77 @@ const styles={
   }
 }
 
-class Home extends React.Component{
+export default class Home extends React.Component{
   constructor(){
     super();
     this.state ={
       category: false,
-      idCategoria: -1
+      idCategoria: -1,
+      stateR: () => this.initialState()
     }
   }
 
   onAction=(aIdCategory)=>{
     //Fijarse como pasar parametros de hijo a padre, el aIDCAtegorias es undefine
+    console.log(aIdCategory)
     this.setState({
-      category:true,
+      idCategoria: aIdCategory,
+      stateR: () => this.updateState()
     })
   }
 
-
-
-  view(){
-    let props = { 
-                  f : () => this.onAction(),
-                  idCategoria: this.state.idCategoria,
-                  padre:this
-
-                }
-    if(!this.state.category){
-      return <OnlyCategory onClick= {props} />
-      }else{
-        return <CategoryAndPublication onClick= {props} />
-      }
+  initialState= () =>{
+    let props = {
+      idCategoria: this.state.idCategoria,
+      onUpdate: (aIdCategory) => this.onAction(aIdCategory)
+    }
+    return <OnlyCategory onClick= {props} />
   }
 
+  updateState=() =>{
+    console.log("Me llamaron")
+    let props = {
+      idCategoria: this.state.idCategoria,
+      onUpdate: (aIdCategory) => this.onAction(aIdCategory)
+    }
+    return <CategoryAndPublication onClick= {props} />
+  }
 
   render(){
     return (
       <div>
         <Header/>
-        {this.view()}
+        {this.state.stateR()}
       </div>
     )
   }
 }
 
-export default Home
+
 
 
 const OnlyCategory=(props) => (
 
-    
         <Grid verticalAlign='middle' columns={2}>
             <Grid.Row>
               <Grid.Column style={styles.grid}>
-                <SidebarCategories onClick= {props} />
+                <SidebarCategories onClick= {(aIdCategory)=>props.onClick.onUpdate(aIdCategory)} />
               </Grid.Column>
             </Grid.Row>
         </Grid>
 )
-   
-
 const CategoryAndPublication =(props)=>(
 
       <Grid verticalAlign='middle' columns={2}>
         <Grid.Row>
           <Grid.Column style={styles.grid}>
-            <SidebarCategories onClick= {props} />
+            <SidebarCategories onClick= {(aIdCategory)=>props.onClick.onUpdate(aIdCategory)} />
           </Grid.Column>
           <Grid.Column style={styles.grid}>
-            <ListPublication onClick= {props} />
+            <ListPublication idCategory= {props.onClick.idCategoria} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
 )
+
 

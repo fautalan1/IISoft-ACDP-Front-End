@@ -14,10 +14,26 @@ export default class ListPublication extends Component {
     }
   }
 
+  // setPublicationByIdCategory=()=>{
+  //     request
+  //     .get('http://localhost:8080/publication/' + this.props.idCategory)
+  //     .then(res => {
+  //       let aPublications = JSON.parse(res.text)
+  //       console.log(aPublications)
+  //       this.setState({
+  //         publication : aPublications
+  //       })
+  //     })
+  //     .catch((err) => {
+  //        alert(err)
+  //     });
 
-    componentDidMount(){
+  //   }
+
+    componentDidMount=()=>{
+      console.log(this.props)
       request
-      .get('http://localhost:8080/publication/' + this.props.onClick.onClick.idCategoria )
+      .get('http://localhost:8080/publication/' + this.props.idCategory)
       .then(res => {
         let aPublications = JSON.parse(res.text)
         console.log(aPublications)
@@ -28,9 +44,44 @@ export default class ListPublication extends Component {
       .catch((err) => {
          alert(err)
       });
-  
     }
 
+  /*   shouldComponentUpdate=(nextProps, nextState)=>{
+      return nextState !== this.state
+    } */
+
+    componentWillReceiveProps=(nextProps)=>{
+      console.log("acaProps")
+      console.log(nextProps)
+      this.setState({category: this.props.idCategory})
+       request
+      .get('http://localhost:8080/publication/' + this.props.idCategory)
+      .then(res => {
+        let aPublications = JSON.parse(res.text)
+        console.log(aPublications)
+        this.setState({
+          publication : aPublications
+        })
+      })
+      .catch((err) => {
+         alert(err)
+      }); 
+    }
+
+    // componentDidUpdate=()=>{
+    //   request
+    //   .get('http://localhost:8080/publication/' + this.props.idCategory)
+    //   .then(res => {
+    //     let aPublications = JSON.parse(res.text)
+    //     console.log(aPublications)
+    //     this.setState({
+    //       publication : aPublications
+    //     })
+    //   })
+    //   .catch((err) => {
+    //      alert(err)
+    //   });
+    // }
 
   render() {
 
@@ -45,7 +96,7 @@ export default class ListPublication extends Component {
                                                 <List.Description>
                                                   Creado por {' '} <a>{x.whoPublishedIt}</a>{' '}.
                                                 </List.Description>
-                                                <List.Description>{Date.parse(x.date).toDateString}</List.Description>
+                                                <List.Description>{(x.date)}</List.Description>
                                               </List.Content>
                                             </List.Item>
                                         
