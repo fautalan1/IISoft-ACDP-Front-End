@@ -8,7 +8,7 @@ export default class SidebarCategories extends Component {
     super();
     this.state ={
       categorySelected: "",
-      categories: []
+      categories: [],
     }
   }
 
@@ -29,22 +29,38 @@ export default class SidebarCategories extends Component {
 
   }
 
-  /* menuItem(){ return this.state.categories.forEach((each)=> <Menu.Item> {each.name} </Menu.Item>) } */
+  xxx(aIdCategory){
+    //Esto lo deberia hacer el padre pero al no tener una forma de pasarle el id use esto.
+    this.props.onClick.onClick.padre.setState({
+      idCategoria: aIdCategory
+    })
 
-  handleCategoryClick = (e, {name}) => ( e ) //TODO: Deberia realizar la accion  de traerse las publicaciones de la categoria para mostrarlas
+    this.props.onClick.onClick.f(aIdCategory)
+  }
+
   
   render() {
 
     const { activeCategory } = this.state
 
     return (
-      <Menu fluid vertical inverted>
-        <MenuItem name='Categorias' header />
-        {this.state.categories.map(x => <Menu.Item active={activeCategory === x.id} onClick={this.handleCategoryClick}> {x.name} </Menu.Item>)}
-          {/* <ul>
-            {this.state.categories.map(x => <li key= {x.id} ><Menu.Item active={activeCategory === x.name} onClick={this.handleCategoryClick}> {x.name} </Menu.Item></li>)}
-          </ul> */}
-      </Menu>
+
+
+        <Menu fluid vertical inverted>
+          <MenuItem name='Categorias' header />
+          {
+            
+            this.state.categories.map(aCategory => 
+              <Menu.Item  key={aCategory.id} active={activeCategory === aCategory.id} onClick={()=> this.xxx(aCategory.id) } > 
+              {aCategory.name} 
+              <div style={{width: '15%', height:'100%'}}>
+                {this.state.viewPublication}
+              </div>
+              </Menu.Item>)
+          }
+        </Menu>
+    
     )
   }
 }
+
