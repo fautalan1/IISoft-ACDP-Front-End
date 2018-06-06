@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {List} from 'semantic-ui-react';
-import request from 'superagent'
+
 
 
 
@@ -15,22 +15,49 @@ export default class ListPublication extends Component {
   }
 
 
-    componentDidMount(){
-      request
-      .get('http://localhost:8080/publication/' + this.props.onClick.onClick.idCategoria )
-      .then(res => {
-        let aPublications = JSON.parse(res.text)
-        console.log(aPublications)
-        this.setState({
-          publication : aPublications
-        })
-      })
-      .catch((err) => {
-         alert(err)
-      });
-  
+   setPublicationByIdCategory=async ()=>{
+    try{
+      const promise = await fetch('http://localhost:8080/publication/' + this.props.idCategory)
+      const posts= await promise.json();
+      console.log(posts)
+       this.setState({
+        publication : posts
+       })
+       return null
+     }catch(err){
+       alert(err)
     }
 
+  }
+
+    componentDidMount=()=>{
+      this.setPublicationByIdCategory()
+    }
+
+  /*   shouldComponentUpdate=(nextProps, nextState)=>{
+      return nextState !== this.state
+    } */
+
+    componentWillReceiveProps=(nextProps)=>{
+      console.log("acaProps")
+      console.log(nextProps)
+      this.setPublicationByIdCategory()
+    }
+
+    // componentDidUpdate=()=>{
+    //   request
+    //   .get('http://localhost:8080/publication/' + this.props.idCategory)
+    //   .then(res => {
+    //     let aPublications = JSON.parse(res.text)
+    //     console.log(aPublications)
+    //     this.setState({
+    //       publication : aPublications
+    //     })
+    //   })
+    //   .catch((err) => {
+    //      alert(err)
+    //   });
+    // }
 
   render() {
 
@@ -45,7 +72,7 @@ export default class ListPublication extends Component {
                                                 <List.Description>
                                                   Creado por {' '} <a>{x.whoPublishedIt}</a>{' '}.
                                                 </List.Description>
-                                                <List.Description>{Date.parse(x.date).toDateString}</List.Description>
+                                                <List.Description>{(x.date)}</List.Description>
                                               </List.Content>
                                             </List.Item>
                                         
