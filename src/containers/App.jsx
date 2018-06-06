@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import request from 'superagent'
 import '../App.css';
 import { Switch, Route } from 'react-router-dom';
-
-
 //Import for route
 import Home from './Home';
 import Schedule from './Schedule';
@@ -41,7 +39,7 @@ export default  class App extends Component {
       <div>
           <Switch>
             <Route exact path='/' component={Home}/>
-            <Route path='/schedule' component={Schedule}/>
+            <Route       path='/schedule' component={Schedule}/>
           </Switch>
       </div>
     );

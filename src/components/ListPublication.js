@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {List} from 'semantic-ui-react';
-import request from 'superagent'
+
 
 
 
@@ -14,36 +14,24 @@ export default class ListPublication extends Component {
     }
   }
 
-  // setPublicationByIdCategory=()=>{
-  //     request
-  //     .get('http://localhost:8080/publication/' + this.props.idCategory)
-  //     .then(res => {
-  //       let aPublications = JSON.parse(res.text)
-  //       console.log(aPublications)
-  //       this.setState({
-  //         publication : aPublications
-  //       })
-  //     })
-  //     .catch((err) => {
-  //        alert(err)
-  //     });
 
-  //   }
+   setPublicationByIdCategory=async ()=>{
+    try{
+      const promise = await fetch('http://localhost:8080/publication/' + this.props.idCategory)
+      const posts= await promise.json();
+      console.log(posts)
+       this.setState({
+        publication : posts
+       })
+       return null
+     }catch(err){
+       alert(err)
+    }
+
+  }
 
     componentDidMount=()=>{
-      console.log(this.props)
-      request
-      .get('http://localhost:8080/publication/' + this.props.idCategory)
-      .then(res => {
-        let aPublications = JSON.parse(res.text)
-        console.log(aPublications)
-        this.setState({
-          publication : aPublications
-        })
-      })
-      .catch((err) => {
-         alert(err)
-      });
+      this.setPublicationByIdCategory()
     }
 
   /*   shouldComponentUpdate=(nextProps, nextState)=>{
@@ -53,19 +41,7 @@ export default class ListPublication extends Component {
     componentWillReceiveProps=(nextProps)=>{
       console.log("acaProps")
       console.log(nextProps)
-      this.setState({category: this.props.idCategory})
-       request
-      .get('http://localhost:8080/publication/' + this.props.idCategory)
-      .then(res => {
-        let aPublications = JSON.parse(res.text)
-        console.log(aPublications)
-        this.setState({
-          publication : aPublications
-        })
-      })
-      .catch((err) => {
-         alert(err)
-      }); 
+      this.setPublicationByIdCategory()
     }
 
     // componentDidUpdate=()=>{
