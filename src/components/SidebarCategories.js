@@ -33,7 +33,7 @@ export default class SidebarCategories extends Component {
     //Esto lo deberia hacer el padre pero al no tener una forma de pasarle el id use esto.
 
     //console.log(this.props.onClick(aIdCategory))
-    this.props.onClick1(aIdCategory) 
+    this.props.onClick(aIdCategory) 
     this.props.onAction("Publication")
   }
 

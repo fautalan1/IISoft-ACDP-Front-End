@@ -6,9 +6,19 @@ import ListPublication from '../components/ListPublication'
 import PublicationComentaries from '../components/PublicationComentaries'
 
 const styles={
-  grid: {
-    height:'100%',
-    width: '15%'
+  gridSidebar: {
+    height:'100vh',
+    width: '16%'
+
+  },
+  gridPublication: {
+    height:'100vh',
+    width: '42%'
+
+  },
+  gridCommentary: {
+    height:'100vh',
+    width: '42%'
 
   },
   box:{
@@ -41,7 +51,8 @@ export default class Home extends React.Component{
       idPublication:newIdPublication
     })
   }
-  async changeIdCategory(newIdCategory){
+
+  changeIdCategory(newIdCategory){
     this.setState({
       idCategoria : newIdCategory
     })
@@ -53,16 +64,17 @@ export default class Home extends React.Component{
       if("Publication" ===  anEnum){
         return (
         
-        <Grid verticalAlign='middle' columns={3}>
-        <Grid.Row>
-          <Grid.Column style={styles.grid}>
-            <SidebarCategories onClick1= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
+        <Grid columns={3} style={{height:'80vh'}}>
+        <Grid.Row >
+          <Grid.Column style={styles.gridSidebar}>
+            <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
                                onAction= {(newStateS)=>this.onAction(newStateS) } />
           </Grid.Column>
-          <Grid.Column style={styles.grid}>
+          <Grid.Column style={styles.gridPublication}>
             <ListPublication idCategory= {this.state.idCategoria}
-                             onAction= {(newStateS)=>this.onAction(newStateS)}
-                             onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)}/>
+                             /* onAction= {(newStateS)=>this.onAction(newStateS)} */
+                             /* onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)} */
+                             changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}/>
           </Grid.Column>
         </Grid.Row>
         </Grid> 
@@ -72,24 +84,25 @@ export default class Home extends React.Component{
       else if("Comentary" === anEnum) {
         return (
       
-          <Grid verticalAlign='middle' columns={3}>
-          <Grid.Row> 
-            <Grid.Column style={styles.grid}>
-            <SidebarCategories onClick1= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
-                               onAction= {(newStateS)=>this.onAction(newStateS) } />
-            </Grid.Column>
+          <Grid columns={3}>
+            <Grid.Row  style={{height:'80vh'}}>
+              <Grid.Column style={styles.gridSidebar}>
+              <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
+                                onAction= {(newStateS)=>this.onAction(newStateS) } />
+              </Grid.Column>
 
-            <Grid.Column style={styles.grid}>
-            <ListPublication idCategory= {this.state.idCategoria}
-                             onAction= {(newStateS)=>this.onAction(newStateS)}
-                             onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)}/>
-            </Grid.Column>
+              <Grid.Column style={styles.gridPublication}>
+              <ListPublication idCategory= {this.state.idCategoria}
+                              /* onAction= {(newStateS)=>this.onAction(newStateS)} */
+                              /* onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)} */
+                              changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}/>
+              </Grid.Column>
 
-            <Grid.Column style={styles.grid}>
-              <PublicationComentaries idCategory= {this.props.onClick.idCategoria} 
-                               onAction= {(newStateS)=>this.onAction(newStateS) }/>
-            </Grid.Column>
-          </Grid.Row>
+              <Grid.Column style={styles.gridCommentary}>
+                <PublicationComentaries idPublication= {this.state.idPublication} 
+                                /* onAction= {(newStateS)=>this.onAction(newStateS) } *//>
+              </Grid.Column>
+            </Grid.Row>
           </Grid>
           
         )  
@@ -97,10 +110,10 @@ export default class Home extends React.Component{
       else {
         return(
           
-          <Grid verticalAlign='middle' columns={3}>
-          <Grid.Row>
-            <Grid.Column style={styles.grid}>
-            <SidebarCategories onClick1= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
+          <Grid columns={3} style={{height:'80vh'}}>
+          <Grid.Row >
+            <Grid.Column style={styles.gridSidebar}>
+            <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
                                onAction= {(newStateS)=>this.onAction(newStateS) } />
             </Grid.Column>
           </Grid.Row>
@@ -116,130 +129,13 @@ export default class Home extends React.Component{
     return (
       <div>
         <Header/>
-
-            {this.show(this.state.stateS)} 
-
+        {this.show(this.state.stateS)} 
       </div>
     )
   }
+
+  changeStateToComentaryHandler=(aPublicationID)=>{ 
+                                                    this.setState({ idPublication :aPublicationID,
+                                                                    stateS        :"Comentary"}) }
+
 }
-
-
-
-
-// const OnlyCategory=(props) => (
-
-//         <Grid verticalAlign='middle' columns={2}>
-//             <Grid.Row>
-//               <Grid.Column style={styles.grid}>
-//                 <SidebarCategories onClick= {(aIdCategory)=>props.onClick.onUpdate(aIdCategory)} />
-//               </Grid.Column>
-//             </Grid.Row>
-//         </Grid>
-// )
-// const CategoryAndPublication=(props)=>(
-
-      
-//       <Grid verticalAlign='middle' columns={2}>
-//         <Grid.Row>
-//           <Grid.Column style={styles.grid}>
-//             <SidebarCategories onClick= {(aIdCategory)=>props.onClick.onUpdate(aIdCategory)} />
-//           </Grid.Column>
-//           <Grid.Column style={styles.grid}>
-//             <ListPublication idCategory= {props.onClick.idCategoria} />
-//           </Grid.Column>
-//         </Grid.Row>
-//       </Grid>
-// )
-
-
-// class ShowItems extends React.Component{
-//   constructor(){
-//     super();
-//     this.state ={
-//       stateS: "",
-//       idPublication: -1,
-//       idCategoria: -1
-//     }
-//   }
-
-//   onAction=(newStateS)=>{
-//     this.setState({
-//       stateS:newStateS
-//     })
-//   }
-//   changeIdPublication=(newIdPublication)=>{
-//     this.setState({
-//       idPublication:newIdPublication
-//     })
-//   }
-//   changeIdCategory=(newIdCategory)=>{
-//     this.setState({
-//       idCategoria: newIdCategory
-//     })
-//   }
- 
-//   show=(anEnum) =>{
-//     switch(anEnum){
-//       case 'Publication':
-//         return
-//         <div>
-//           <Grid.Column style={styles.grid}>
-//             <SidebarCategories onClick= {(aIdCategory)=>this.changeIdCategory(aIdCategory)}
-//                                onAction= {(newStateS)=>this.onAction(newStateS) } />
-//           </Grid.Column>
-//           <Grid.Column style={styles.grid}>
-//             <ListPublication
-//                              onAction= {(newStateS)=>this.onAction(newStateS)}
-//                              onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)}/>
-//           </Grid.Column>
-//         </div>  
-//       case 'Comentary':
-//         return 
-//           <div>
-//             <Grid.Column style={styles.grid}>
-//             <SidebarCategories onClick= {(aIdCategory)=>this.changeIdCategory(aIdCategory)}
-//                                onAction= {(newStateS)=>this.onAction(newStateS) } />
-//             </Grid.Column>
-//             <Grid.Column style={styles.grid}>
-//             <ListPublication
-//                              onAction= {(newStateS)=>this.onAction(newStateS)}
-//                              onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)}/>>
-//             </Grid.Column>
-//             <Grid.Column style={styles.grid}>
-//               <ListPublication idCategory= {this.props.onClick.idCategoria} 
-//                                onAction= {(newStateS)=>this.onAction(newStateS) }/>
-//             </Grid.Column>
-//           </div>
-//       default :
-//         return 
-//           <div>
-//             <Grid.Column style={styles.grid}>
-//             <SidebarCategories onClick= {(aIdCategory)=>this.changeIdCategory(aIdCategory)}
-//                                onAction= {(newStateS)=>this.onAction(newStateS) } />
-//             </Grid.Column>
-//           </div>
-//     }
-
-//   }
-
-      
-//   render(){
-//     return(
-//       <Grid verticalAlign='middle' columns={3}>
-//         <Grid.Row>  
-//           {this.show(this.state.stateS)}
-//         </Grid.Row>
-//       </Grid>
-//   )}
-// }
-
-
-
-// var Show={
-
-//   Category,
-//   Publication,
-//   Comentary  
-
-// };
