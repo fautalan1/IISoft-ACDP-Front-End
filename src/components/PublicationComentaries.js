@@ -1,8 +1,87 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
+import ComentariesService from '../Services/ComentariesService'
+
+export default class PublicationComentaries extends Component {
+
+  constructor(props)
+  { super(props);
+    this.state= 
+          {
+            publicationID : props.idPublication,
+            commentaries: [] 
+          }
+  }
+
+  componentDidMount=()=>{
+    this.setCommentariesForIDPublication()
+  }
+  
+  setCommentariesForIDPublication=async() =>{
+    /* var commentariesToLoad = ComentariesService.getCommentariesOfPublication(this.state.publicationID)
+    this.setState({commentaries:commentariesToLoad}) */
+    try {
+      const promise   = await fetch('http://localhost:8080/comments/' + this.state.publicationID)
+      const posts     = await promise.json();
+      console.log(posts)
+      this.setState({
+        commentaries : posts
+       })
+       return null
+    }catch(err){
+        alert('Hubo Un Error')
+        alert(err)
+    }
+  }
+
+  /* Arma el codigo html con todos los comentarios */
+  comentaries=()=>
+  {
+    
+    return (
+              <div>
+                {this.state.commentaries.map (
+                                          aComentaries => <Comment key={aComentaries.id}>
+                                                            <Comment.Content>
+                                                              <Comment.Author>
+                                                                <p className="commentAutor">{aComentaries.whoPublishedIt}</p>
+                                                              </Comment.Author>
+                                                              <Comment.Metadata>
+                                                                <div className="commentHour">{Date(aComentaries.date)}</div>
+                                                              </Comment.Metadata>
+                                                              <Comment.Text>
+                                                                <p className="commentText">{aComentaries.text}</p>
+                                                              </Comment.Text>
+                                                              <Comment.Actions>
+                                                                <Comment.Action>
+                                                                  <p className="commentReply">Reply</p>
+                                                                </Comment.Action>
+                                                              </Comment.Actions>
+                                                            </Comment.Content>
+                                                          </Comment>)}
+                </div>
+          )
+  }
+
+render() {
+
+  return (
+    <div>
+    <Segment inverted>
+      <Comment.Group>
+        {this.comentaries()}
+        <Form reply inverted>
+          <Form.TextArea />
+          <Button content='Add Comment' labelPosition='left' icon='edit' primary />
+        </Form>
+      </Comment.Group>
+    </Segment>
+    </div>
+  )
+}
 
 /*TODO: Es una base, no tiene funcionalidad ni nada.*/
-const PublicationComentaries = () => (
+/* const PublicationComentariesConst = () => (
   <Segment inverted>
   <Comment.Group>
     <Comment>
@@ -48,6 +127,6 @@ const PublicationComentaries = () => (
     </Form>
   </Comment.Group>
   </Segment>
-)
+) */
 
-export default PublicationComentaries
+}
