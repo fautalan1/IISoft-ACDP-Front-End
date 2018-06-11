@@ -6,9 +6,19 @@ import ListPublication from '../components/ListPublication'
 import PublicationComentaries from '../components/PublicationComentaries'
 
 const styles={
-  grid: {
-    height:'100%',
-    width: '15%'
+  gridSidebar: {
+    height:'100vh',
+    width: '16%'
+
+  },
+  gridPublication: {
+    height:'100vh',
+    width: '42%'
+
+  },
+  gridCommentary: {
+    height:'100vh',
+    width: '42%'
 
   },
   box:{
@@ -54,13 +64,13 @@ export default class Home extends React.Component{
       if("Publication" ===  anEnum){
         return (
         
-        <Grid verticalAlign='middle' columns={3}>
-        <Grid.Row>
-          <Grid.Column style={styles.grid}>
+        <Grid columns={3} style={{height:'80vh'}}>
+        <Grid.Row >
+          <Grid.Column style={styles.gridSidebar}>
             <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
                                onAction= {(newStateS)=>this.onAction(newStateS) } />
           </Grid.Column>
-          <Grid.Column style={styles.grid}>
+          <Grid.Column style={styles.gridPublication}>
             <ListPublication idCategory= {this.state.idCategoria}
                              /* onAction= {(newStateS)=>this.onAction(newStateS)} */
                              /* onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)} */
@@ -74,21 +84,21 @@ export default class Home extends React.Component{
       else if("Comentary" === anEnum) {
         return (
       
-          <Grid verticalAlign='middle' columns={3} stretched >
-            <Grid.Row>
-              <Grid.Column style={styles.grid} >
+          <Grid columns={3}>
+            <Grid.Row  style={{height:'80vh'}}>
+              <Grid.Column style={styles.gridSidebar}>
               <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
                                 onAction= {(newStateS)=>this.onAction(newStateS) } />
               </Grid.Column>
 
-              <Grid.Column style={styles.grid}>
+              <Grid.Column style={styles.gridPublication}>
               <ListPublication idCategory= {this.state.idCategoria}
                               /* onAction= {(newStateS)=>this.onAction(newStateS)} */
                               /* onChange={(newIdPublication)=>this.changeIdPublication(newIdPublication)} */
                               changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}/>
               </Grid.Column>
 
-              <Grid.Column style={styles.grid}>
+              <Grid.Column style={styles.gridCommentary}>
                 <PublicationComentaries idPublication= {this.state.idPublication} 
                                 /* onAction= {(newStateS)=>this.onAction(newStateS) } *//>
               </Grid.Column>
@@ -100,9 +110,9 @@ export default class Home extends React.Component{
       else {
         return(
           
-          <Grid verticalAlign='middle' columns={3}>
-          <Grid.Row>
-            <Grid.Column style={styles.grid}>
+          <Grid columns={3} style={{height:'80vh'}}>
+          <Grid.Row >
+            <Grid.Column style={styles.gridSidebar}>
             <SidebarCategories onClick= {(newIdCategory)=>this.changeIdCategory(newIdCategory)}
                                onAction= {(newStateS)=>this.onAction(newStateS) } />
             </Grid.Column>

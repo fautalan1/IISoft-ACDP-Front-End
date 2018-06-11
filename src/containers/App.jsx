@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 //Import for route
 import Home from './Home';
 import Schedule from './Schedule';
-
+import UserService from '../Services/UserService'
 
 
 
@@ -17,10 +17,11 @@ export default  class App extends Component {
    this.state ={
      user: ""
    }
+   
  }
 
   componentDidMount(){
-    request
+    /* request
     .get('http://localhost:8080/user')
     .then(res => {
       let user = JSON.parse(res.text)
@@ -30,8 +31,14 @@ export default  class App extends Component {
     })
     .catch((err) => {
        alert(err)
-    });
-
+    }); */
+    UserService.getUser()
+    .then(
+      (user) => this.setState
+      ({ user : user })
+    ).catch((err) => {
+      alert(err)
+   })
   }
   
   render() {
