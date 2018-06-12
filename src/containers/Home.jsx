@@ -56,8 +56,12 @@ export default class Home extends React.Component{
     this.setState({
       idCategoria : newIdCategory
     })
-
   }
+
+  changeStateToComentaryHandler=(aPublicationID)=>{ 
+    this.setState({ idPublication :aPublicationID,
+                    stateS        :"Comentary"}) }
+
  
   show=(anEnum) =>{
     
@@ -134,8 +138,5 @@ export default class Home extends React.Component{
     )
   }
 
-  changeStateToComentaryHandler=(aPublicationID)=>{ 
-                                                    this.setState({ idPublication :aPublicationID,
-                                                                    stateS        :"Comentary"}) }
 
 }

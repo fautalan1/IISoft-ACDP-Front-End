@@ -1,46 +1,19 @@
 import React, { Component } from 'react';
-import request from 'superagent'
 import '../App.css';
 import { Switch, Route } from 'react-router-dom';
+
+
 //Import for route
 import Home from './Home';
 import Schedule from './Schedule';
-import UserService from '../Services/UserService'
 
 
 
 
 
 export default  class App extends Component {
- constructor(){
-   super();
-   this.state ={
-     user: ""
-   }
-   
- }
 
-  componentDidMount(){
-    /* request
-    .get('http://localhost:8080/user')
-    .then(res => {
-      let user = JSON.parse(res.text)
-      this.setState({
-        user : user.name
-      })
-    })
-    .catch((err) => {
-       alert(err)
-    }); */
-    UserService.getUser()
-    .then(
-      (user) => this.setState
-      ({ user : user })
-    ).catch((err) => {
-      alert(err)
-   })
-  }
-  
+ 
   render() {
     return (
       <div>

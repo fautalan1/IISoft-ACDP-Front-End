@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Menu, MenuItem} from 'semantic-ui-react'
+import axios from 'axios';
 export default class SidebarCategories extends Component {
 
   constructor(){
@@ -10,29 +11,15 @@ export default class SidebarCategories extends Component {
     }
   }
 
-  async componentDidMount(){
-    
-    try{
-     const data = await fetch('http://localhost:8080/categories');
-     const posts= await data.json();
-     console.log(posts)
-      this.setState({
-        categories : posts
-      })
-      return null
-    }catch(err){
-      alert(err)
-   }
-
-
-
-    
+  componentDidMount=async()=>{
+    axios.get('http://localhost:8080/categories')
+    .then(response => {
+      const categories = response.data;
+      this.setState({ categories });
+    })  
   }
 
-  xxx(aIdCategory){
-    //Esto lo deberia hacer el padre pero al no tener una forma de pasarle el id use esto.
-
-    //console.log(this.props.onClick(aIdCategory))
+  handerOnClick(aIdCategory){
     this.props.onClick(aIdCategory) 
     this.props.onAction("Publication")
   }
@@ -52,7 +39,7 @@ export default class SidebarCategories extends Component {
             this.state.categories.map(aCategory => 
               <Menu.Item  key={aCategory.id} 
                           active={activeCategory === aCategory.id}
-                          onClick={()=> this.xxx(aCategory.id)}> 
+                          onClick={()=> this.handerOnClick(aCategory.id)}> 
               {aCategory.name} 
               </Menu.Item>)
           }

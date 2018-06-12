@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
-import ComentariesService from '../Services/ComentariesService'
-import UserService from '../Services/UserService'
+import axios from 'axios';
 
 export default class PublicationComentaries extends Component {
 
@@ -10,31 +9,76 @@ export default class PublicationComentaries extends Component {
     this.reply=""
     this.state= 
           {
-            publicationID : props.idPublication,
-            commentaries: [] 
+            publicationID : "",
+            commentaries: [] ,
+            user:""
           }
   }
 
   componentDidMount=()=>{
-    this.setCommentariesForIDPublication()
+    this.setCommentariesForIDPublication(this.props.idPublication)
+    this.setUser()
   }
   
-  setCommentariesForIDPublication=async() =>{
+
+  setUser=async()=>{ 
+    axios.get(`http://localhost:8080/user`)
+    .then(response => {
+      const user = response.data;
+      this.setState({ user });
+    })
+  
+  }
+
+  setCommentariesForIDPublication=async(anIdPublication) =>{
     /* var commentariesToLoad = ComentariesService.getCommentariesOfPublication(this.state.publicationID)
     this.setState({commentaries:commentariesToLoad}) */
-    try {
-      const promise   = await fetch('http://localhost:8080/comments/' + this.state.publicationID)
-      const posts     = await promise.json();
-      console.log(posts)
-      this.setState({
-        commentaries : posts
-       })
-       return null
-    }catch(err){
-        alert('Hubo Un Error')
-        alert(err)
+    axios.get('http://localhost:8080/comments/' + anIdPublication)
+    .then(response => {
+      const commentaries = response.data;
+      this.setState({ commentaries });
+    })
+
+  }
+
+  //*NO ANDA ESTO VIEJO*//
+  // shouldComponentUpdate=(nextProps, nextState)=>{
+  //   console.log("Should Update?")
+  //   return (nextProps.idPublication !== this.props.idPublication) || (nextState.publicationID !== this.state.publicationID)
+  // }   
+  
+  
+  componentDidUpdate=(prevProps, prevState)=>{
+    //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
+    if (prevProps.idPublication !== this.props.idPublication)
+    { 
+      console.log("ACTUALIZO COMENTARIOS!!!")
+      this.setCommentariesForIDPublication(this.props.idPublication) 
     }
   }
+
+
+  ///*** METHODOS PROPIOS */
+  registryReply=(aReply)=>{
+    this.reply=aReply
+  }
+
+
+  // submitReplyHandler=()=>{ 
+  //   var typeDate    = Date.parse("March 21, 2012")
+  //   var dateOfReply = Date(typeDate)
+  //   var user        = "pepita"
+  //   /* var user        = UserService.logUser */
+  //   var newReply    = {
+  //                       date: dateOfReply,
+  //                       idPublication: 1,
+  //                       whoPublishedIt: user,
+  //                       text: this.reply
+  //                     }
+  //   ComentariesService.postNewReply(newReply)
+                    
+  // }
+
 
   /* Arma el codigo html con todos los comentarios */
   comentaries=()=>
@@ -78,24 +122,6 @@ export default class PublicationComentaries extends Component {
     )
   }
   
-  registryReply=(aReply)=>{
-    this.reply=aReply
-  }
 
-
-  submitReplyHandler=()=>{ 
-    var typeDate    = Date.parse("March 21, 2012")
-    var dateOfReply = Date(typeDate)
-    var user        = "pepita"
-    /* var user        = UserService.logUser */
-    var newReply    = {
-                        date: dateOfReply,
-                        idPublication: 1,
-                        whoPublishedIt: user,
-                        text: this.reply
-                      }
-    ComentariesService.postNewReply(newReply)
-                    
-  }
 
 }
