@@ -6,12 +6,13 @@ export default class PublicationComentaries extends Component {
 
   constructor(props)
   { super(props);
-    this.reply=""
     this.state= 
           {
             publicationID : "",
             commentaries: [] ,
-            user:""
+            user:"",
+            reply:"",
+            update:false
           }
   }
 
@@ -36,17 +37,28 @@ export default class PublicationComentaries extends Component {
     axios.get('http://localhost:8080/comments/' + anIdPublication)
     .then(response => {
       const commentaries = response.data;
-      this.setState({ commentaries });
+      this.setState({
+        publicationID: anIdPublication, 
+        commentaries  });
     })
 
   }
 
-  //*NO ANDA ESTO VIEJO*//
-  // shouldComponentUpdate=(nextProps, nextState)=>{
-  //   console.log("Should Update?")
-  //   return (nextProps.idPublication !== this.props.idPublication) || (nextState.publicationID !== this.state.publicationID)
-  // }   
-  
+  postCommentary = event => {
+    console.log("Entre como loco");
+    axios.post('http://localhost:8080/commentary/',  
+    {
+        text            : this.state.reply,
+        idPublication   : this.state.publicationID,
+        whoPublishedIt  : "pepita",
+        date            :  "3918-07-22T03:00:00Z"
+
+    } )
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+  }
   
   componentDidUpdate=(prevProps, prevState)=>{
     //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
@@ -58,26 +70,24 @@ export default class PublicationComentaries extends Component {
   }
 
 
+
   ///*** METHODOS PROPIOS */
   registryReply=(aReply)=>{
-    this.reply=aReply
+    this.setState({
+      reply: aReply,
+      update:true
+    })
+    //this.setCommentariesForIDPublication(this.props.idPublication)
   }
 
+    //*NO ANDA ESTO VIEJO*//
+  shouldComponentUpdate=(nextProps, nextState)=>{
+    console.log("Should Update?")
+    return (nextProps.idPublication !== this.props.idPublication) || (nextState.publicationID !== this.state.publicationID)
+  }   
 
-  // submitReplyHandler=()=>{ 
-  //   var typeDate    = Date.parse("March 21, 2012")
-  //   var dateOfReply = Date(typeDate)
-  //   var user        = "pepita"
-  //   /* var user        = UserService.logUser */
-  //   var newReply    = {
-  //                       date: dateOfReply,
-  //                       idPublication: 1,
-  //                       whoPublishedIt: user,
-  //                       text: this.reply
-  //                     }
-  //   ComentariesService.postNewReply(newReply)
-                    
-  // }
+
+
 
 
   /* Arma el codigo html con todos los comentarios */
@@ -90,11 +100,11 @@ export default class PublicationComentaries extends Component {
                                           aComentaries => <Comment key={aComentaries.id}>
                                                             <Comment.Content>
                                                               <Comment.Author>
-                                                                <p className="commentAutor">{aComentaries.whoPublishedIt}</p>
+                                                                <p className="commentAutor">{aComentaries.whoPublishedIt}  {Date(aComentaries.date)}</p>
                                                               </Comment.Author>
-                                                              <Comment.Metadata>
+                                                              {/* <Comment.Metadata>
                                                                 <div className="commentHour">{Date(aComentaries.date)}</div>
-                                                              </Comment.Metadata>
+                                                              </Comment.Metadata> */}
                                                               <Comment.Text>
                                                                 <p className="commentText">{aComentaries.text}</p>
                                                               </Comment.Text>
@@ -106,15 +116,16 @@ export default class PublicationComentaries extends Component {
 
   render() {
 
+
     return (
       <div>
-      <Segment inverted>
+      <Segment inverted color= 'violet' >
         <Comment.Group>
           {this.comentaries()}
-          <Form reply inverted onSubmit={()=>this.submitReplyHandler()} >
+          <Form reply inverted>
             <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
             {/* @todo validacion de contenido del formulario para el boton*/}
-            <Button content='Responder' labelPosition='left' icon='edit'/>
+           <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postCommentary() } />
           </Form>
         </Comment.Group>
       </Segment>

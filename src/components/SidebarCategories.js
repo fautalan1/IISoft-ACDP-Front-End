@@ -26,7 +26,6 @@ export default class SidebarCategories extends Component {
 
   
   render() {
-
     const { activeCategory } = this.state
 
     return (
