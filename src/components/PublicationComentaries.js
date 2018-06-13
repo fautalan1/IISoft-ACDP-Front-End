@@ -6,13 +6,12 @@ export default class PublicationComentaries extends Component {
 
   constructor(props)
   { super(props);
+    this.reply=""
     this.state= 
           {
             publicationID : "",
             commentaries: [] ,
             user:"",
-            reply:"",
-            update:false
           }
   }
 
@@ -48,7 +47,7 @@ export default class PublicationComentaries extends Component {
     console.log("Entre como loco");
     axios.post('http://localhost:8080/commentary/',  
     {
-        text            : this.state.reply,
+        text            : this.reply,
         idPublication   : this.state.publicationID,
         whoPublishedIt  : "pepita",
         date            :  "3918-07-22T03:00:00Z"
@@ -57,36 +56,32 @@ export default class PublicationComentaries extends Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
+        this.setState({commentaries: []})
       })
   }
-  
-  componentDidUpdate=(prevProps, prevState)=>{
-    //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
-    if (prevProps.idPublication !== this.props.idPublication)
-    { 
-      console.log("ACTUALIZO COMENTARIOS!!!")
-      this.setCommentariesForIDPublication(this.props.idPublication) 
-    }
-  }
-
-
-
+ 
   ///*** METHODOS PROPIOS */
   registryReply=(aReply)=>{
-    this.setState({
-      reply: aReply,
-      update:true
-    })
-    //this.setCommentariesForIDPublication(this.props.idPublication)
+    this.reply = aReply
   }
 
     //*NO ANDA ESTO VIEJO*//
   shouldComponentUpdate=(nextProps, nextState)=>{
     console.log("Should Update?")
-    return (nextProps.idPublication !== this.props.idPublication) || (nextState.publicationID !== this.state.publicationID)
+    return (nextProps.idPublication !== this.props.idPublication)|| 
+           (nextState.publicationID !== this.state.publicationID)||
+           (nextState.commentaries !== this.state.commentaries)
   }   
 
-
+  componentDidUpdate=(prevProps, prevState)=>{
+    //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
+    if (  (prevProps.idPublication !== this.props.idPublication) ||
+          (this.state.commentaries.length === 0 )      )
+    { 
+      console.log("ACTUALIZO COMENTARIOS!!!")
+      this.setCommentariesForIDPublication(this.props.idPublication) 
+    }
+  }
 
 
 
