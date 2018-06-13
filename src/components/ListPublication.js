@@ -8,12 +8,12 @@ export default class ListPublication extends Component {
   constructor(props){
     super();
     console.log("Construyo")
-    this.list =[]
+    /* this.list =[] */
+    this.reply        = ""
+    this.titleOfReply = ""
     this.state ={
       category: "",
-      publication: [],
-      reply:"",
-      title:""
+      publication: []      
     }
   }
   
@@ -42,29 +42,27 @@ export default class ListPublication extends Component {
   //Es para saver si hay que actualizar o no, comparo el nuevo state y props contra los viejos, si alguno es distinto debo actualizar
   shouldComponentUpdate=(nextProps, nextState)=>{
 
-    return (nextProps.idCategory !== this.props.idCategory) || (nextState.category !== this.state.category)
+    return  (nextProps.idCategory   !== this.props.idCategory)  || 
+            (nextState.category     !== this.state.category)    ||
+            (nextState.publication  !== this.state.publication)
   }    
 
   componentDidUpdate=(prevProps, prevState)=>{
     console.log(this.props.idCategory)
     //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
-    if (prevProps.idCategory !== this.props.idCategory)
+    if ((prevProps.idCategory         !== this.props.idCategory) ||
+        (this.state.publication.length=== 0))
     { 
       console.log("ACTUALIZO!!!")
       this.setPublicationByIdCategory(this.props.idCategory) 
     }
   }
   registryReply=(aReply)=>{
-    this.setState({
-      reply: aReply
-    })
+    this.reply = aReply
   }
 
   registryTitle=(aTitle)=>{
-    this.setState({
-      title: aTitle,
-    })
-
+    this.titleOfReply = aTitle
   }
 
   postPublication=()=>{
@@ -73,8 +71,8 @@ export default class ListPublication extends Component {
     axios.post('http://localhost:8080/publication/',  
     {
         whoPublishedIt  : "pepita",  
-        text            : this.state.reply,
-        title           : this.state.title,
+        text            : this.reply,
+        title           : this.titleOfReply,
         idCategory      : this.state.category,
         date            :  "3918-07-22T03:00:00Z"
 
@@ -82,6 +80,7 @@ export default class ListPublication extends Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
+        this.setState({publication: []})
       })
   }
 
