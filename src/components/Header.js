@@ -20,6 +20,8 @@ export default class Header extends Component {
           </Menu.Item>
           
           <Menu.Item as={Link} to='/' name='Home'/>
+          <Menu.Item as={Link} to='/perfil/PepitaUser' name='Perfil'/>
+          <Menu.Item as={Link} to='/usuarios' name='Users'/>
           <Menu.Item as={Link} to='/schedule' name='Schedule'/>
           
           <Menu.Item
