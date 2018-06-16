@@ -49,7 +49,7 @@ export default class PublicationComentaries extends Component {
     {
         text            : this.reply,
         idPublication   : this.state.publicationID,
-        whoPublishedIt  : "pepita",
+        whoPublishedIt  : this.state.user.name,
         date            :  "3918-07-22T03:00:00Z"
 
     } )
