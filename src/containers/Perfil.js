@@ -3,15 +3,15 @@ import axios from 'axios';
 
 export default class Home extends Component {
 
-    constructor() { 
-        super();
+    constructor(props) { 
+        super(props);
         this.state = {
             user: ""
         }
     }
 
     setUser = async () => { 
-        axios.get(`http://localhost:8080/user`)
+        axios.get('http://localhost:8080/user/' + this.props.match.params.userName)
         .then(response => {
           const user = response.data;
           this.setState({ user });
@@ -20,6 +20,12 @@ export default class Home extends Component {
 
     componentDidMount = () => {
         this.setUser()
+    }
+
+    componentDidUpdate=(prevProps, prevState) => {
+        if(prevProps.match.params.userName !== this.props.match.params.userName) { 
+            this.setUser()
+        }
     }
 
     render(){

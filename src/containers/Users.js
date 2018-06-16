@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { Segment, Item, Grid } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
 
 export default class Home extends Component {
 
@@ -25,20 +26,20 @@ export default class Home extends Component {
 
     render(){
         return (
-          <Segment inverted  color='blue'  >
+          <Segment inverted  color='yellow'  >
               {this.state.users.map(anUser =>
-                          <Grid.Row key={anUser.id} > 
+                          <Grid.Row key={anUser.userName} > 
                             <Item.Group>
                             <Item>
                               {/* {<Item.Image size='tiny' src='../image/icono.png' />} */}
                         
                               <Item.Content>
                               
-                                <Item.Header as='a'> 
-                                <p className="" >{anUser.name}</p>
+                                <Item.Header> 
+                                <Link to={'/user/' + anUser.userName}>{anUser.userName}</Link>
                                 </Item.Header>
                                 <Item.Description>
-                                  <p className="">{anUser.userName } </p>
+                                  <p className="">{anUser.name } </p>
                                 </Item.Description>
   
                                 <Item.Extra>

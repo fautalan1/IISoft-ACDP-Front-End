@@ -75,8 +75,9 @@ export default class PublicationComentaries extends Component {
 
   componentDidUpdate=(prevProps, prevState)=>{
     //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
-    if (  (prevProps.idPublication !== this.props.idPublication) ||
-          (this.state.commentaries.length === 0 )      )
+    if (  (prevProps.idPublication !== this.props.idPublication) 
+      // || (this.state.commentaries.length === 0 )      
+    )
     { 
       console.log("ACTUALIZO COMENTARIOS!!!")
       this.setCommentariesForIDPublication(this.props.idPublication) 
