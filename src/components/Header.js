@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom'
 import { Input, Menu, Image } from 'semantic-ui-react'
 
 export default class Header extends Component {
-  state = { activeItem: '/' }
+
+  constructor(props) { 
+    super(props);
+    this.state = {
+      activeItem: '/'
+    }
+}
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name })
@@ -20,7 +26,7 @@ export default class Header extends Component {
           </Menu.Item>
           
           <Menu.Item as={Link} to='/' name='Home'/>
-          <Menu.Item as={Link} to='/perfil/PepitaUser' name='Perfil'/>
+          <Menu.Item as={Link} to={'/perfil/' + this.props.anUserName} name='Perfil'/>
           <Menu.Item as={Link} to='/usuarios' name='Users'/>
           <Menu.Item as={Link} to='/schedule' name='Schedule'/>
           
