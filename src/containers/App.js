@@ -3,6 +3,8 @@ import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import Header from '../components/Header';
 import axios from 'axios';
+import { NotificationContainer, NotificationManager } from 'react-notifications'
+import 'react-notifications/lib/notifications.css'
 
 import Home from './Home';
 import Schedule from './Schedule';
@@ -29,15 +31,28 @@ export default class App extends Component {
     }))
   }
 
+  noLogin = () => {
+    this.setState(() => ({
+      redirectToReferrer: true
+    }))
+  }
+
+  createNotification = () => {
+    NotificationManager.error('Username or Password Incorrect', 'Alert', 5000, () => {
+      alert('callback')
+    })
+  }
+
   verify = () => {
     axios.get('http://localhost:8080/user/' + this.state.name)
     .then(response => {
-      const user = response.data;
-      this.setState({ user });
-      this.login();
+      const user = response.data
+      this.setState({ user })
+      this.setState({name: user.userName})
+      this.login()
     })
     .catch(err => {
-      console.log(err)
+      this.createNotification()
     })
   }
 
@@ -54,13 +69,14 @@ export default class App extends Component {
       return (
         <div>
           <Login verify={this.verify} handleChange={this.handleChange}/>
+          <NotificationContainer/>
         </div>
       )
     }
 
     return (
       <div>
-          <Header anUserName={this.state.name}/>
+          <Header anUserName={this.state.name} noLogin={this.noLogin}/>
           <Switch>
             <Route exact path="/" render={()=><Home anUserName={this.state.name}/>}/>
             <Route exact path='/perfil/:userName' component={Perfil}/>

@@ -11,9 +11,10 @@ export default class Header extends Component {
     }
 }
 
-  handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name })
-  }
+handleItemClick = (e, { name }) => {
+  this.setState({ activeItem: name })
+  this.props.noLogin()
+}
 
   render() {
     const { activeItem } = this.state
