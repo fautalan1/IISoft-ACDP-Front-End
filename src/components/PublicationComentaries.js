@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default class PublicationComentaries extends Component {
 
@@ -17,17 +18,6 @@ export default class PublicationComentaries extends Component {
 
   componentDidMount=()=>{
     this.setCommentariesForIDPublication(this.props.idPublication)
-    this.setUser()
-  }
-  
-
-  setUser=async()=>{ 
-    axios.get(`http://localhost:8080/user`)
-    .then(response => {
-      const user = response.data;
-      this.setState({ user });
-    })
-  
   }
 
   setCommentariesForIDPublication=async(anIdPublication) =>{
@@ -49,7 +39,7 @@ export default class PublicationComentaries extends Component {
     {
         text            : this.reply,
         idPublication   : this.state.publicationID,
-        whoPublishedIt  : this.state.user.name,
+        whoPublishedIt  : this.props.anUser,
         date            :  "3918-07-22T03:00:00Z"
 
     } )
@@ -76,12 +66,12 @@ export default class PublicationComentaries extends Component {
   componentDidUpdate=(prevProps, prevState)=>{
     //Se Chequea las props nuevas contra las viejas para asegurarse si hay que actualizar
     if (  (prevProps.idPublication !== this.props.idPublication) 
-      // || (this.state.commentaries.length === 0 )      
+       || (this.state.commentaries.length === 0 )      
     )
     { 
       console.log("ACTUALIZO COMENTARIOS!!!")
       this.setCommentariesForIDPublication(this.props.idPublication) 
-    }
+    } else {}
   }
 
 
@@ -96,7 +86,8 @@ export default class PublicationComentaries extends Component {
                                           aComentaries => <Comment key={aComentaries.id}>
                                                             <Comment.Content>
                                                               <Comment.Author>
-                                                                <p className="commentAutor">{aComentaries.whoPublishedIt}  {Date(aComentaries.date)}</p>
+                                                                <Link to={'/user/' + aComentaries.whoPublishedIt}>{aComentaries.whoPublishedIt}</Link>
+                                                                {/* <p className="commentAutor">{aComentaries.whoPublishedIt}  {Date(aComentaries.date)}</p> */}
                                                               </Comment.Author>
                                                               {/* <Comment.Metadata>
                                                                 <div className="commentHour">{Date(aComentaries.date)}</div>

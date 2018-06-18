@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Form,Button,Segment, Item,Grid } from 'semantic-ui-react'
 
 export default class ListPublication extends Component {
 
   constructor(props){
-    super();
-    console.log("Construyo")
-    /* this.list =[] */
+    super(props)
     this.reply        = ""
     this.titleOfReply = ""
     this.state ={
@@ -16,10 +14,8 @@ export default class ListPublication extends Component {
       publication: []      
     }
   }
-  
 
-
-   setPublicationByIdCategory=async(anIdCategory)=>{
+  setPublicationByIdCategory=async(anIdCategory)=>{
     axios.get('http://localhost:8080/publication/' + anIdCategory)
     .then(response => {
       
@@ -29,8 +25,6 @@ export default class ListPublication extends Component {
       this.setState({ category:anIdCategory,
                       publication  });
     })
-    
-
   }
 
   componentDidMount=()=>{
@@ -70,12 +64,11 @@ export default class ListPublication extends Component {
    
     axios.post('http://localhost:8080/publication/',  
     {
-        whoPublishedIt  : "pepita",  
+        whoPublishedIt  : this.props.anUser,  
         text            : this.reply,
         title           : this.titleOfReply,
         idCategory      : this.state.category,
-        date            :  "3918-07-22T03:00:00Z"
-
+        date            : "3918-07-22T03:00:00Z"
     } )
       .then(res => {
         console.log(res);
@@ -83,9 +76,7 @@ export default class ListPublication extends Component {
         this.setState({publication: []})
       })
   }
-
-
-  
+ 
   render(){
     console.log("Hago Render")
     return (
@@ -103,7 +94,8 @@ export default class ListPublication extends Component {
                               <p className="" >{aPublication.title}</p>
                               </Item.Header>
                               <Item.Meta>
-                                <p className=""> Creado por {' '} <a>{aPublication.whoPublishedIt}</a>{' '}</p>
+                              <Link to={'/user/' + aPublication.whoPublishedIt}>{aPublication.whoPublishedIt}</Link>
+                                {/* <p className=""> Creado por {' '} <a>{aPublication.whoPublishedIt}</a>{' '}</p> */}
                               </Item.Meta>
                               <Item.Description>
                                 <p className="">{aPublication.text } </p>

@@ -30,8 +30,8 @@ const styles={
 }
 
 export default class Home extends React.Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state ={
       stateS: "",
       idPublication: -1,
@@ -75,7 +75,8 @@ export default class Home extends React.Component{
           </Grid.Column>
           <Grid.Column style={styles.gridPublication}>
             <ListPublication idCategory= {this.state.idCategoria}
-                             changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}/>
+                             changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}
+                             anUser={this.props.anUserName}/>
           </Grid.Column>
         </Grid.Row>
         </Grid> 
@@ -94,12 +95,12 @@ export default class Home extends React.Component{
 
               <Grid.Column style={styles.gridPublication}>
               <ListPublication idCategory= {this.state.idCategoria}
-
-                              changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}/>
+                              changeStateToComentaryHandler={(aPublicationID)=>this.changeStateToComentaryHandler(aPublicationID)}
+                              anUser={this.props.anUserName}/>
               </Grid.Column>
 
               <Grid.Column style={styles.gridCommentary}>
-                <PublicationComentaries idPublication= {this.state.idPublication}/>
+                <PublicationComentaries idPublication= {this.state.idPublication} anUser={this.props.anUserName}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
