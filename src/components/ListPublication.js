@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Form,Button,Segment, Item,Grid } from 'semantic-ui-react'
+import { NotificationContainer, NotificationManager } from 'react-notifications'
+import 'react-notifications/lib/notifications.css'
 
 export default class ListPublication extends Component {
 
@@ -59,6 +61,16 @@ export default class ListPublication extends Component {
     this.titleOfReply = aTitle
   }
 
+  notificationSuccess = (aPublication) => {
+    NotificationManager.success('You have ' + this.suscribeText(aPublication) + 'd correctly', 'Success')
+  }
+
+  notificationNotSuccessful = () => {
+    NotificationManager.error('An error has occurred', 'Alert', 5000, () => {
+      alert('callback')
+    })
+  }
+
   postPublication=()=>{
     console.log("Entre como loco");
    
@@ -75,6 +87,24 @@ export default class ListPublication extends Component {
         console.log(res.data);
         this.setState({publication: []})
       })
+  }
+
+  suscribe=(aPublication)=>{   
+    axios.put('http://localhost:8080//publication/subscriber/' + this.props.anUser, aPublication)
+      .then(res => {
+        this.notificationSuccess(aPublication)
+        this.setState({publication: []})
+      })
+      .catch(err => {
+        this.notificationNotSuccessful()
+      })
+  }
+
+  suscribeText=(aPublication)=>{   
+    if(aPublication.subscribers.includes(this.props.anUser)){
+      return 'Unsubscribe'
+    }
+    return 'Suscribe'
   }
  
   render(){
@@ -105,6 +135,11 @@ export default class ListPublication extends Component {
                                 
                                 <div className="">{Date(aPublication.date)}</div>
                               </Item.Extra>
+                              Subscribers: [{aPublication.subscribers.join(' , ')}], Cant: {aPublication.cantSubscribers}
+                              <Item.Extra>                                
+                              <Button content={this.suscribeText(aPublication)} labelPosition='left' icon='edit' 
+                              color= 'blue' onClick ={ () => this.suscribe(aPublication) } />
+                              </Item.Extra>
                           
                             </Item.Content>
                           </Item>
@@ -123,6 +158,7 @@ export default class ListPublication extends Component {
               
                 <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postPublication() } />
         </Form>
+        <NotificationContainer/>
       </Segment>
     )
   }
