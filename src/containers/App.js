@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import Header from '../components/Header';
-import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 
 import Home from './Home';
 import Schedule from './Schedule';
-import NewPublication from './NewPublication'
 import Perfil from './Perfil'
 import Login from './Login'
 import Users from './Users'
+import UserService from '../Services/UserService'
 
 export default class App extends Component {
 
@@ -43,17 +42,19 @@ export default class App extends Component {
     })
   }
 
-  verify = () => {
-    axios.get('http://localhost:8080/user/' + this.state.name)
-    .then(response => {
-      const user = response.data
-      this.setState({ user })
-      this.setState({name: user.userName})
-      this.login()
-    })
-    .catch(err => {
-      this.createNotification()
-    })
+  verify = async () => {
+    const userService = new UserService()
+    
+    userService.getUser(this.state.name).then(response => 
+                                                {
+                                                  const user = response.data
+                                                  userService.SetUser(user)
+                                                  this.setState({ user })
+                                                  this.setState({name: user.userName})
+                                                  this.login()
+                                                }
+                                              )
+                                        .catch(err => { this.createNotification() } )
   }
 
   handleChange = (ev, input)=>{
@@ -84,7 +85,6 @@ export default class App extends Component {
             <Route exact path='/login' component={Login}/>
             <Route exact path='/usuarios' component={Users}/>
             <Route       path='/schedule' component={Schedule}/>
-            <Route       path='/newPublication' component={NewPublication}/>
           </Switch>
       </div>
     );
