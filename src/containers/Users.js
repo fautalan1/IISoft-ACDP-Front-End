@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import { Segment, Item, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-
+import UserService from '../Services/UserService'
 export default class Home extends Component {
 
     constructor() { 
@@ -13,8 +12,9 @@ export default class Home extends Component {
     }
 
     setUsers = async () => { 
-        axios.get(`http://localhost:8080/users`)
-        .then(response => {
+      const userService = new UserService()
+      
+      userService.getAllUsers().then(response => {
           const users = response.data;
           this.setState({ users });
         })

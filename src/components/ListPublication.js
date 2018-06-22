@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {Form,Button,Segment, Item,Grid } from 'semantic-ui-react'
+import {Form, Button, Segment, Item, Grid } from 'semantic-ui-react'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 
@@ -155,8 +155,7 @@ export default class ListPublication extends Component {
               <Form.TextArea onInput={(e, { value }) =>this.registryTitle(value)}/>
               <h3 className=""> Text </h3>
               <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
-              
-                <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postPublication() } />
+              <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postPublication() } />
         </Form>
         <NotificationContainer/>
       </Segment>

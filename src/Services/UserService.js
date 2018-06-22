@@ -1,20 +1,34 @@
-const UserService = {
-    logUser: "",
+import axios from 'axios';
 
-    getUser: async ()=>{
-        try {
-            const promise   = await fetch('http://localhost:8080/user')
-            const posts     = await promise.json();
-            console.log(posts)
-            this.logUser = posts
-            return this.logUser
-        }catch(err){
-            alert('Hubo Un Error')
-            alert(err)
+let _UserService = null
+
+class UserService {
+
+    constructor () {
+        if(!_UserService) {
+            this.userLogged = null
+            _UserService = this
         }
-      }
-}
+        else
+            return _UserService
+        console.log("Singleton class created")
+    }
 
-Object.freeze(UserService);
+    SetUser(aUser) {
+        this.userLogged = aUser
+    }
+
+    GetUserLogged () {
+        return this.userLogged
+    }
+
+    getUser= (aName) =>{
+        return axios.get('http://localhost:8080/user/' + aName)
+    }
+
+    getAllUsers= () =>{
+        return axios.get(`http://localhost:8080/users`)
+    }
+}
 
 export default UserService
