@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Label, Segment, Grid, Accordion, List } from 'semantic-ui-react'
+import { Label, Segment, Grid, Accordion } from 'semantic-ui-react'
 import UserService from '../Services/UserService'
 
 const styles=   {   rowProfileTittleStyle   : { width       :'50vh',
@@ -27,6 +27,17 @@ export default class Perfil extends Component {
         }
     }
 
+    componentDidMount = () => {
+        if (this.props.match.params.userName !== this.state.user.userName )
+        {   
+            this.userService.getUser(this.props.match.params.userName)
+                            .then(response =>   { const user = response.data
+                                                this.setState({user: user})
+                                                })
+                            .catch(err => { this.createNotification() } )
+        }       
+    }
+    
     handleInfoAccount = () => {
         this.setState({activeInfoAccount: !this.state.activeInfoAccount})
       }

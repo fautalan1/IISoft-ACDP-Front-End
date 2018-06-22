@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-'use strict';
-
 let _UserService = null
 
 class UserService {
