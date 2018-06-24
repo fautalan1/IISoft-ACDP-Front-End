@@ -1,60 +1,42 @@
 import React, { Component } from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ComentariesService from '../Services/ComentariesService';
 
 export default class PublicationComentaries extends Component {
 
   constructor(props)
   { super(props);
+    this.comentariesService = new ComentariesService()
     this.reply=""
     this.state= 
           {
             publicationID : "",
             commentaries: [] ,
-            user:"",
           }
   }
 
-  componentDidMount=()=>{
-    this.setCommentariesForIDPublication(this.props.idPublication)
-  }
+  componentDidMount=()=> this.setCommentariesForIDPublication(this.props.idPublication)
 
-  getAuth = () => {
-    const token = JSON.parse(localStorage.getItem('token'))
-    const auth = 'Bearer-' + token.access_token
-    const header = { headers: {"Authorization" : auth} }
-    return header
-  }
-
-  setCommentariesForIDPublication=async(anIdPublication) =>{
-    /* var commentariesToLoad = ComentariesService.getCommentariesOfPublication(this.state.publicationID)
-    this.setState({commentaries:commentariesToLoad}) */
-    axios.get('http://localhost:8080/comments/' + anIdPublication, this.getAuth())
-    .then(response => {
-      const commentaries = response.data;
-      this.setState({
-        publicationID: anIdPublication, 
-        commentaries  });
-    })
-
+  setCommentariesForIDPublication=async(anIdPublication) =>{  
+    this.comentariesService.getComentariesOfPublicationId(anIdPublication)
+                           .then(response => {
+                                                const commentaries = response.data;
+                                                this.setState({
+                                                  publicationID: anIdPublication, 
+                                                  commentaries  });
+                                              })
   }
 
   postCommentary = event => {
-    console.log("Entre como loco");
-    axios.post('http://localhost:8080/commentary/',  
-    {
-        text            : this.reply,
-        idPublication   : this.state.publicationID,
-        whoPublishedIt  : this.props.anUser,
-        date            :  "3918-07-22T03:00:00Z"
-
-    }, this.getAuth() )
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.setState({commentaries: []})
-      })
+    var aReply =  {
+                    text            : this.reply,
+                    idPublication   : this.state.publicationID,
+                    whoPublishedIt  : this.props.anUser,
+                    date            :  "3918-07-22T03:00:00Z"
+                  }
+    
+    this.comentariesService.postNewComentary(aReply).then(res =>{this.setState({commentaries: []})})
   }
  
   ///*** METHODOS PROPIOS */
@@ -64,7 +46,7 @@ export default class PublicationComentaries extends Component {
 
     //*NO ANDA ESTO VIEJO*//
   shouldComponentUpdate=(nextProps, nextState)=>{
-    console.log("Should Update?")
+    console.log("debo Actualizar?")
     return (nextProps.idPublication !== this.props.idPublication)|| 
            (nextState.publicationID !== this.state.publicationID)||
            (nextState.commentaries !== this.state.commentaries)
@@ -76,9 +58,9 @@ export default class PublicationComentaries extends Component {
        || (this.state.commentaries.length === 0 )      
     )
     { 
-      console.log("ACTUALIZO COMENTARIOS!!!")
+      console.log("Actualizo")
       this.setCommentariesForIDPublication(this.props.idPublication) 
-    } else {}
+    }
   }
 
 

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {Menu, MenuItem} from 'semantic-ui-react'
-import axios from 'axios'
+import CategoriesService from '../Services/CategoriesService';
 export default class SidebarCategories extends Component {
 
   constructor(){
     super();
+    this.categoriesService = new CategoriesService()
     this.state ={
       categorySelected: "",
       categories: [],
@@ -12,14 +13,12 @@ export default class SidebarCategories extends Component {
   }
 
   componentDidMount = async () => {
-    const token = JSON.parse(localStorage.getItem('token'))
-    const auth = 'Bearer-' + token.access_token
-    const header = { headers: {"Authorization" : auth} }
-    axios.get('http://localhost:8080/categories', header)
-    .then(response => {
-      const categories = response.data;
-      this.setState({ categories });
-    })  
+   
+    this.categoriesService.getCategories().then (response =>{
+                                                              const categories = response.data;
+                                                              this.setState({ categories });
+                                                            }
+                                                  )  
   }
 
   handerOnClick(aIdCategory){
