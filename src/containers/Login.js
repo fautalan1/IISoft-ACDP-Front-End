@@ -38,6 +38,8 @@ export default ({verify, handleChange}) => {
                                 iconPosition='left' placeholder='Username' />
                     <Form.Input
                       fluid
+                      name="password"
+                      onChange={handleChange}
                       icon='lock'
                       iconPosition='left'
                       placeholder='Password'
@@ -52,7 +54,6 @@ export default ({verify, handleChange}) => {
               </Grid.Column>
             </Grid>
           </div>
-          pepita   ivan   nahu   gabi   victor   diego   pablo
         </div>
     )
 }

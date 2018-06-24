@@ -17,8 +17,15 @@ export default class ListPublication extends Component {
     }
   }
 
+  getAuth = () => {
+    const token = JSON.parse(localStorage.getItem('token'))
+    const auth = 'Bearer-' + token.access_token
+    const header = { headers: {"Authorization" : auth} }
+    return header
+  }
+
   setPublicationByIdCategory=async(anIdCategory)=>{
-    axios.get('http://localhost:8080/publication/' + anIdCategory)
+    axios.get('http://localhost:8080/publication/' + anIdCategory, this.getAuth())
     .then(response => {
       
       const publication = response.data;
@@ -81,7 +88,7 @@ export default class ListPublication extends Component {
         title           : this.titleOfReply,
         idCategory      : this.state.category,
         date            : "3918-07-22T03:00:00Z"
-    } )
+    }, this.getAuth())
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -90,7 +97,7 @@ export default class ListPublication extends Component {
   }
 
   suscribe=(aPublication)=>{   
-    axios.put('http://localhost:8080//publication/subscriber/' + this.props.anUser, aPublication)
+    axios.put('http://localhost:8080//publication/subscriber/' + this.props.anUser, aPublication, this.getAuth())
       .then(res => {
         this.notificationSuccess(aPublication)
         this.setState({publication: []})

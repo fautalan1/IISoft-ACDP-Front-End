@@ -21,6 +21,11 @@ export default class Perfil extends Component {
         console.log(this.state.user)
     }
 
+    setUser = () => {
+        const user = this.userService.GetUserLogged()
+        this.setState({ user })
+    }
+
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.match.params.userName !== this.props.match.params.userName) {
             this.setUser()
@@ -34,7 +39,7 @@ export default class Perfil extends Component {
                             .then(response =>   { const user = response.data
                                                 this.setState({user: user})
                                                 })
-                            .catch(err => { this.createNotification() } )
+                            .catch(err => { console.log(err) } )
         }       
     }
     

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Menu, MenuItem} from 'semantic-ui-react'
-import axios from 'axios';
+import axios from 'axios'
 export default class SidebarCategories extends Component {
 
   constructor(){
@@ -11,8 +11,11 @@ export default class SidebarCategories extends Component {
     }
   }
 
-  componentDidMount=async()=>{
-    axios.get('http://localhost:8080/categories')
+  componentDidMount = async () => {
+    const token = JSON.parse(localStorage.getItem('token'))
+    const auth = 'Bearer-' + token.access_token
+    const header = { headers: {"Authorization" : auth} }
+    axios.get('http://localhost:8080/categories', header)
     .then(response => {
       const categories = response.data;
       this.setState({ categories });

@@ -22,11 +22,19 @@ class UserService {
         return this.userLogged
     }
 
-    getUser= (aName) =>{
-        return axios.get('http://localhost:8080/user/' + aName)
+    logIn = (username, password) => {
+        const aLogin = {
+            username,
+            password
+        }
+        return axios.post('http://localhost:8080/api/login', aLogin)
     }
 
-    getAllUsers= () =>{
+    getUser = (username) => {
+        return axios.get('http://localhost:8080/user/' + username)
+    }
+
+    getAllUsers = () => {
         return axios.get(`http://localhost:8080/users`)
     }
 }
