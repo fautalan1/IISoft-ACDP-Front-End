@@ -20,10 +20,17 @@ export default class PublicationComentaries extends Component {
     this.setCommentariesForIDPublication(this.props.idPublication)
   }
 
+  getAuth = () => {
+    const token = JSON.parse(localStorage.getItem('token'))
+    const auth = 'Bearer-' + token.access_token
+    const header = { headers: {"Authorization" : auth} }
+    return header
+  }
+
   setCommentariesForIDPublication=async(anIdPublication) =>{
     /* var commentariesToLoad = ComentariesService.getCommentariesOfPublication(this.state.publicationID)
     this.setState({commentaries:commentariesToLoad}) */
-    axios.get('http://localhost:8080/comments/' + anIdPublication)
+    axios.get('http://localhost:8080/comments/' + anIdPublication, this.getAuth())
     .then(response => {
       const commentaries = response.data;
       this.setState({
@@ -42,7 +49,7 @@ export default class PublicationComentaries extends Component {
         whoPublishedIt  : this.props.anUser,
         date            :  "3918-07-22T03:00:00Z"
 
-    } )
+    }, this.getAuth() )
       .then(res => {
         console.log(res);
         console.log(res.data);

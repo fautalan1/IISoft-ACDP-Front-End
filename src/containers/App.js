@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import Header from '../components/Header';
+//import decode from 'jwt-decode';
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 
@@ -17,20 +18,39 @@ export default class App extends Component {
   constructor(){
     super();
     this.state = {
-      redirectToReferrer: true, 
+      redirectToReferrer: this.verifyRedirectToReferrer(), 
       user: {},
-      name: "",     
+      name: "",
+      password: "",     
       argsSignup: {},
     }
   }
+
+  verifyRedirectToReferrer = () => {
+    const aToken = JSON.parse(localStorage.getItem('token'))
+    const aBool = !aToken || this.isTokenExpired(aToken)
+    return aBool
+  }
+
+  isTokenExpired(token) {
+    try {
+        const dateNow = new Date()
+        return token.exp < dateNow.getTime()
+    }
+    catch (err) {
+        return false
+    }
+}
 
   login = () => {
     this.setState(() => ({
       redirectToReferrer: false
     }))
+    this.getUser()
   }
 
   noLogin = () => {
+    localStorage.removeItem('token')
     this.setState(() => ({
       redirectToReferrer: true
     }))
@@ -43,6 +63,19 @@ export default class App extends Component {
   }
 
   verify = async () => {
+    const userService = new UserService()
+    
+    userService.logIn(this.state.name, this.state.password).then(response => 
+                                                {
+                                                  const aToken = JSON.stringify(response.data)
+                                                  localStorage.setItem('token', aToken)
+                                                  this.login()
+                                                }
+                                              )
+                                        .catch(err => { this.createNotification() } )
+  }
+
+  getUser = async () => {
     const userService = new UserService()
     
     userService.getUser(this.state.name).then(response => 
@@ -60,7 +93,7 @@ export default class App extends Component {
   handleChange = (ev, input)=>{
     const argsSignup = this.state.argsSignup
     argsSignup[input.name] = input.value
-    this.setState({ name: argsSignup.name})
+    this.setState({ [input.name]: argsSignup[input.name]})
   }
 
   render() {
