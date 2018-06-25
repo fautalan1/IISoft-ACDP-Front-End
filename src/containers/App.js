@@ -4,14 +4,13 @@ import { Route, Switch } from 'react-router-dom'
 import Header from '../components/Header';
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-
 import Home from './Home';
-import Schedule from './Schedule';
 import Perfil from './Perfil'
 import Login from './Login'
 import Users from './Users'
 import UserService from '../Services/UserService'
 import SessionService from '../Services/SessionService';
+import Register from './Register'
 
 export default class App extends Component {
   
@@ -52,7 +51,7 @@ export default class App extends Component {
 
     userService.logIn(this.state.name, this.state.password).then(response => 
                                                 {
-                                                  self.sessionService.setToken(JSON.stringify(response.data))
+                                                  self.sessionService.setToken(response.data)
                                                   self.login()
                                                 }
                                               )
@@ -94,12 +93,12 @@ export default class App extends Component {
       <div>
           <Header anUserName={this.state.name} logout={this.logout}/>
           <Switch>
-            <Route exact path="/" render={()=><Home anUserName={this.state.name}/>}/>
-            <Route exact path='/perfil/:userName' component={Perfil}/>
-            <Route exact path='/user/:userName' component={Perfil}/>
-            <Route exact path='/login' component={Login}/>
-            <Route exact path='/usuarios' component={Users}/>
-            <Route       path='/schedule' component={Schedule}/>
+            <Route exact path="/"                 render    ={()=><Home anUserName={this.state.name}/>}/>
+            <Route exact path='/perfil/:userName' component ={Perfil}/>
+            <Route exact path='/user/:userName'   component ={Perfil}/>
+            <Route exact path='/login'            component ={Login}/>
+            <Route exact path='/usuarios'         component ={Users}/>
+            <Route exact path='/register'       component ={Register}/>
           </Switch>
       </div>
     );

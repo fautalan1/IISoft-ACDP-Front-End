@@ -27,7 +27,8 @@ class SessionService {
     
   removeToken = () => localStorage.removeItem('token')
 
-  setToken = (aToken) => localStorage.setItem('token', aToken)
+  setToken = (aToken) => localStorage.setItem('token', JSON.stringify(aToken))
+  
   getAuth = () => {
     const token = JSON.parse(localStorage.getItem('token'))
     const auth = 'Bearer-' + token.access_token

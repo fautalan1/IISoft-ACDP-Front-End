@@ -37,6 +37,10 @@ class UserService {
     getAllUsers = () => {
         return axios.get(`http://localhost:8080/users`)
     }
+
+    postNewUser = (aNewUser) => {
+        return axios.post('http://localhost:8080/newUser', aNewUser)
+    }
 }
 
 export default UserService

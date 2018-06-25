@@ -26,9 +26,10 @@ export default class Header extends Component {
             <Image size="mini" src="../UNQ Black Logo.png" />
           </Menu.Item>
           
-          <Menu.Item as={Link} to='/' name='Home'/>
-          <Menu.Item as={Link} to={'/perfil/' + this.props.anUserName} name='Perfil'/>
-          <Menu.Item as={Link} to='/usuarios' name='Users'/>
+          <Menu.Item as={Link} to='/'                                   name='Home'/>
+          <Menu.Item as={Link} to={'/perfil/' + this.props.anUserName}  name='Perfil'/>
+          <Menu.Item as={Link} to='/usuarios'                           name='Users'/>
+          <Menu.Item as={Link} to='/register'                           name='Registrar Usuario'/>
 {/*           <Menu.Item as={Link} to='/schedule' name='Schedule'/>
           
           <Menu.Item
