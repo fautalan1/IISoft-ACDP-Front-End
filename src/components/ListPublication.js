@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import {Form, Button, Segment, Item, Grid } from 'semantic-ui-react'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-
+import SuscribeService from '../Services/SuscribeService';
+import PublicationService from '../Services/PublicationService';
 export default class ListPublication extends Component {
 
   constructor(props){
     super(props)
+    this.suscribeService    = new SuscribeService()
+    this.publicationService = new PublicationService()
     this.reply        = ""
     this.titleOfReply = ""
     this.state ={
@@ -16,35 +18,19 @@ export default class ListPublication extends Component {
       publication: []      
     }
   }
-
-  getAuth = () => {
-    const token = JSON.parse(localStorage.getItem('token'))
-    const auth = 'Bearer-' + token.access_token
-    const header = { headers: {"Authorization" : auth} }
-    return header
-  }
-
   setPublicationByIdCategory=async(anIdCategory)=>{
-    axios.get('http://localhost:8080/publication/' + anIdCategory, this.getAuth())
-    .then(response => {
-      
-      const publication = response.data;
-
-      console.log(publication)
-      this.setState({ category:anIdCategory,
-                      publication  });
-    })
+    this.publicationService.getPublicationsOfCategoryId(anIdCategory)
+                           .then(response => {
+                                                const publication = response.data;
+                                                this.setState({ category:anIdCategory,
+                                                                publication  });
+                                              })
   }
 
-  componentDidMount=()=>{
- 
-    console.log(this.props.idCategory)
-    this.setPublicationByIdCategory(this.props.idCategory)
-  }
+  componentDidMount=()=> this.setPublicationByIdCategory(this.props.idCategory)
 
   //Es para saver si hay que actualizar o no, comparo el nuevo state y props contra los viejos, si alguno es distinto debo actualizar
   shouldComponentUpdate=(nextProps, nextState)=>{
-
     return  (nextProps.idCategory   !== this.props.idCategory)  || 
             (nextState.category     !== this.state.category)    ||
             (nextState.publication  !== this.state.publication)
@@ -79,32 +65,25 @@ export default class ListPublication extends Component {
   }
 
   postPublication=()=>{
-    console.log("Entre como loco");
-   
-    axios.post('http://localhost:8080/publication/',  
-    {
-        whoPublishedIt  : this.props.anUser,  
-        text            : this.reply,
-        title           : this.titleOfReply,
-        idCategory      : this.state.category,
-        date            : "3918-07-22T03:00:00Z"
-    }, this.getAuth())
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.setState({publication: []})
-      })
+    var aNewPublication = {
+                            whoPublishedIt  : this.props.anUser,  
+                            text            : this.reply,
+                            title           : this.titleOfReply,
+                            idCategory      : this.state.category,
+                            date            : "3918-07-22T03:00:00Z"
+                          }
+
+    this.publicationService.postNewPublication(aNewPublication)
+                           .then(res => { this.setState({publication: []})})
   }
 
   suscribe=(aPublication)=>{   
-    axios.put('http://localhost:8080//publication/subscriber/' + this.props.anUser, aPublication, this.getAuth())
-      .then(res => {
-        this.notificationSuccess(aPublication)
-        this.setState({publication: []})
-      })
-      .catch(err => {
-        this.notificationNotSuccessful()
-      })
+    this.suscribeService.suscribeToPublication(this.props.anUser, aPublication)
+                        .then(res =>{
+                                      this.notificationSuccess(aPublication)
+                                      this.setState({publication: []})
+                                    })
+                        .catch(err => { this.notificationNotSuccessful()})
   }
 
   suscribeText=(aPublication)=>{   
@@ -128,24 +107,22 @@ export default class ListPublication extends Component {
                             <Item.Content>
                             
                               <Item.Header as='a' onClick={()=>this.props.changeStateToComentaryHandler(aPublication.id)}> 
-                              <p className="" >{aPublication.title}</p>
+                                <p className="" >{aPublication.title}</p>
                               </Item.Header>
                               <Item.Meta>
-                              <Link to={'/user/' + aPublication.whoPublishedIt}>{aPublication.whoPublishedIt}</Link>
-                                {/* <p className=""> Creado por {' '} <a>{aPublication.whoPublishedIt}</a>{' '}</p> */}
+                                <Link to={'/user/' + aPublication.whoPublishedIt}>{aPublication.whoPublishedIt}</Link>
                               </Item.Meta>
                               <Item.Description>
                                 <p className="">{aPublication.text } </p>
                               </Item.Description>
 
                               <Item.Extra>
-                                
                                 <div className="">{Date(aPublication.date)}</div>
                               </Item.Extra>
-                              Subscribers: [{aPublication.subscribers.join(' , ')}], Cant: {aPublication.cantSubscribers}
+                                Subscribers: [{aPublication.subscribers.join(' , ')}], Cant: {aPublication.cantSubscribers}
                               <Item.Extra>                                
-                              <Button content={this.suscribeText(aPublication)} labelPosition='left' icon='edit' 
-                              color= 'blue' onClick ={ () => this.suscribe(aPublication) } />
+                                <Button content={this.suscribeText(aPublication)} labelPosition='left' icon='edit' 
+                                color= 'blue' onClick ={ () => this.suscribe(aPublication) } />
                               </Item.Extra>
                           
                             </Item.Content>
@@ -154,7 +131,7 @@ export default class ListPublication extends Component {
                       </Grid.Row>
             )}
           
-
+          <NotificationContainer/>
         </Segment>
         <Form reply inverted>
               <h2 className=""> New Publication </h2>
@@ -164,7 +141,7 @@ export default class ListPublication extends Component {
               <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
               <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postPublication() } />
         </Form>
-        <NotificationContainer/>
+        
       </Segment>
     )
   }

@@ -11,7 +11,6 @@ class UserService {
         }
         else
             return _UserService
-        console.log("Singleton class created")
     }
 
     SetUser(aUser) {
@@ -28,6 +27,7 @@ class UserService {
             password
         }
         return axios.post('http://localhost:8080/api/login', aLogin)
+
     }
 
     getUser = (username) => {
@@ -36,6 +36,10 @@ class UserService {
 
     getAllUsers = () => {
         return axios.get(`http://localhost:8080/users`)
+    }
+
+    postNewUser = (aNewUser) => {
+        return axios.post('http://localhost:8080/newUser', aNewUser)
     }
 }
 

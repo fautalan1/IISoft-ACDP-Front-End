@@ -2,45 +2,28 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import Header from '../components/Header';
-//import decode from 'jwt-decode';
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-
 import Home from './Home';
-import Schedule from './Schedule';
 import Perfil from './Perfil'
 import Login from './Login'
 import Users from './Users'
 import UserService from '../Services/UserService'
+import SessionService from '../Services/SessionService';
+import Register from './Register'
 
 export default class App extends Component {
-
+  
   constructor(){
     super();
+    this.sessionService = new SessionService()
     this.state = {
-      redirectToReferrer: this.verifyRedirectToReferrer(), 
-      user: {},
+      redirectToReferrer: this.sessionService.verifyRedirectToReferrer(), 
       name: "",
       password: "",     
       argsSignup: {},
     }
   }
-
-  verifyRedirectToReferrer = () => {
-    const aToken = JSON.parse(localStorage.getItem('token'))
-    const aBool = !aToken || this.isTokenExpired(aToken)
-    return aBool
-  }
-
-  isTokenExpired(token) {
-    try {
-        const dateNow = new Date()
-        return token.exp < dateNow.getTime()
-    }
-    catch (err) {
-        return false
-    }
-}
 
   login = () => {
     this.setState(() => ({
@@ -49,8 +32,8 @@ export default class App extends Component {
     this.getUser()
   }
 
-  noLogin = () => {
-    localStorage.removeItem('token')
+  logout = () => {
+    this.sessionService.removeToken()
     this.setState(() => ({
       redirectToReferrer: true
     }))
@@ -64,30 +47,28 @@ export default class App extends Component {
 
   verify = async () => {
     const userService = new UserService()
-    
+    var self  = this
+
     userService.logIn(this.state.name, this.state.password).then(response => 
                                                 {
-                                                  const aToken = JSON.stringify(response.data)
-                                                  localStorage.setItem('token', aToken)
-                                                  this.login()
+                                                  self.sessionService.setToken(response.data)
+                                                  self.login()
                                                 }
                                               )
-                                        .catch(err => { this.createNotification() } )
+                                        .catch(err => { self.createNotification() } )
   }
 
   getUser = async () => {
     const userService = new UserService()
-    
+    var self  = this
+
     userService.getUser(this.state.name).then(response => 
                                                 {
                                                   const user = response.data
                                                   userService.SetUser(user)
-                                                  this.setState({ user })
-                                                  this.setState({name: user.userName})
-                                                  this.login()
                                                 }
                                               )
-                                        .catch(err => { this.createNotification() } )
+                                        .catch(err => { self.createNotification() } )
   }
 
   handleChange = (ev, input)=>{
@@ -110,14 +91,14 @@ export default class App extends Component {
 
     return (
       <div>
-          <Header anUserName={this.state.name} noLogin={this.noLogin}/>
+          <Header anUserName={this.state.name} logout={this.logout}/>
           <Switch>
-            <Route exact path="/" render={()=><Home anUserName={this.state.name}/>}/>
-            <Route exact path='/perfil/:userName' component={Perfil}/>
-            <Route exact path='/user/:userName' component={Perfil}/>
-            <Route exact path='/login' component={Login}/>
-            <Route exact path='/usuarios' component={Users}/>
-            <Route       path='/schedule' component={Schedule}/>
+            <Route exact path="/"                 render    ={()=><Home anUserName={this.state.name}/>}/>
+            <Route exact path='/perfil/:userName' component ={Perfil}/>
+            <Route exact path='/user/:userName'   component ={Perfil}/>
+            <Route exact path='/login'            component ={Login}/>
+            <Route exact path='/usuarios'         component ={Users}/>
+            <Route exact path='/register'       component ={Register}/>
           </Switch>
       </div>
     );
