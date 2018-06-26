@@ -41,6 +41,10 @@ class UserService {
     postNewUser = (aNewUser) => {
         return axios.post('http://localhost:8080/newUser', aNewUser)
     }
+
+    getUserByMail = (mail) => {
+        return axios.get('http://localhost:8080/user/mail/' + mail)
+    }
 }
 
 export default UserService
