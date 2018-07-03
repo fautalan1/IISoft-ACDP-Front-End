@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Comment, Form, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import ComentariesService from '../Services/ComentariesService';
+import UserService from '../Services/UserService';
 
 export default class PublicationComentaries extends Component {
 
@@ -62,6 +63,10 @@ export default class PublicationComentaries extends Component {
       this.setCommentariesForIDPublication(this.props.idPublication) 
     }
   }
+  changePerfil=(userPerfil)=>{
+    let servi =new UserService()
+    servi.setUserPerfil(userPerfil)
+  }
 
 
 
@@ -74,8 +79,8 @@ export default class PublicationComentaries extends Component {
                 {this.state.commentaries.map (
                                           aComentaries => <Comment key={aComentaries.id}>
                                                             <Comment.Content>
-                                                              <Comment.Author>
-                                                                <Link to={'/user/' + aComentaries.whoPublishedIt}>{aComentaries.whoPublishedIt}</Link>
+                                                              <Comment.Author onClick={()=>this.changePerfil(aComentaries.whoPublishedIt)}>
+                                                                <Link to={'/perfil'}>{aComentaries.whoPublishedIt}</Link>
                                                                 {/* <p className="commentAutor">{aComentaries.whoPublishedIt}  {Date(aComentaries.date)}</p> */}
                                                               </Comment.Author>
                                                               {/* <Comment.Metadata>

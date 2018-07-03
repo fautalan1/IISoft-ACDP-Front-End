@@ -23,6 +23,11 @@ export default class Home extends Component {
     componentDidMount = () => {
         this.setUsers()
     }
+  
+    changePerfil=(userPerfil)=>{
+      let servi =new UserService()
+      servi.setUserPerfil(userPerfil)
+    }
 
     render(){
         return (
@@ -35,8 +40,8 @@ export default class Home extends Component {
                         
                               <Item.Content>
                               
-                                <Item.Header> 
-                                <Link to={'/user/' + anUser.userName}>{anUser.userName}</Link>
+                                <Item.Header onClick={()=>this.changePerfil(anUser.userName)}> 
+                                <Link to='/perfil'>{anUser.userName}</Link>
                                 </Item.Header>
                                 <Item.Description>
                                   <p className="">{anUser.name } </p>

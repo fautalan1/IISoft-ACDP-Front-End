@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserService from '../Services/UserService';
 import { Link } from 'react-router-dom';
 import {Form, Button, Segment, Item, Grid } from 'semantic-ui-react'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
@@ -92,6 +93,10 @@ export default class ListPublication extends Component {
     }
     return 'Suscribe'
   }
+  changePerfil=(userPerfil)=>{
+    let servi =new UserService()
+    servi.setUserPerfil(userPerfil)
+  }
  
   render(){
     console.log("Hago Render")
@@ -109,8 +114,8 @@ export default class ListPublication extends Component {
                               <Item.Header as='a' onClick={()=>this.props.changeStateToComentaryHandler(aPublication.id)}> 
                                 <p className="" >{aPublication.title}</p>
                               </Item.Header>
-                              <Item.Meta>
-                                <Link to={'/user/' + aPublication.whoPublishedIt}>{aPublication.whoPublishedIt}</Link>
+                              <Item.Meta onClick={() =>this.changePerfil(aPublication.whoPublishedIt)}>
+                                <Link to={'/perfil'}>{aPublication.whoPublishedIt}</Link>
                               </Item.Meta>
                               <Item.Description>
                                 <p className="">{aPublication.text } </p>

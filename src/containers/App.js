@@ -8,6 +8,7 @@ import Home from './Home';
 import Perfil from './Perfil'
 import Login from './Login'
 import Users from './Users'
+import EditProfilePersonal from './EditProfilePersonal'
 import UserService from '../Services/UserService'
 import SessionService from '../Services/SessionService';
 import Register from './Register'
@@ -93,12 +94,12 @@ export default class App extends Component {
       <div>
           <Header anUserName={this.state.name} logout={this.logout}/>
           <Switch>
-            <Route exact path="/"                 render    ={()=><Home anUserName={this.state.name}/>}/>
-            <Route exact path='/perfil/:userName' component ={Perfil}/>
-            <Route exact path='/user/:userName'   component ={Perfil}/>
-            <Route exact path='/login'            component ={Login}/>
-            <Route exact path='/usuarios'         component ={Users}/>
-            <Route exact path='/register'       component ={Register}/>
+            <Route exact path="/"                          render    ={()=><Home anUserName={this.state.name}/>}/>
+            <Route exact path='/perfil'                    component ={Perfil}/>
+            <Route exact path='/editProfilePersonal'       component ={EditProfilePersonal}/>
+            <Route exact path='/login'                     component ={Login}/>
+            <Route exact path='/usuarios'                  component ={Users}/>
+            <Route exact path='/register'                  component ={Register}/>
           </Switch>
       </div>
     );
