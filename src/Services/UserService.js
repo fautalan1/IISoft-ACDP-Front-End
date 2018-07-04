@@ -1,17 +1,21 @@
 import axios from 'axios';
-
+import SessionService from '../Services/SessionService';
 let _UserService = null
 
 class UserService {
 
     constructor () {
         this.anUserPerfil=""
+        this.sessionService = new SessionService()
         if(!_UserService) {
             this.userLogged = null
             _UserService = this
         }
         else
             return _UserService
+    }
+    isPerfilUser(){
+       return this.anUserPerfil === this.GetUserLogged().userName
     }
 
     setUserPerfil(_anUserPerfil){
@@ -22,7 +26,7 @@ class UserService {
         this.userLogged = aUser
     }
 
-    GetUserLogged () {
+    GetUserLogged(){
         return this.userLogged
     }
 
@@ -32,7 +36,6 @@ class UserService {
             password
         }
         return axios.post('http://localhost:8080/api/login', aLogin)
-
     }
 
     getUser = (username) => {
@@ -52,8 +55,16 @@ class UserService {
     }
 
     postProfilePersonal=(profile)=>{
-        return axios.post('http://localhost:8080/user',profile)
+        return axios.post('http://localhost:8080/user',profile, this.sessionService.getAuth())
     }
+
+    getUserProfesional=(aUsername)=>{
+        return axios.get('http://localhost:8080/userWorkProfile/' + aUsername)        
+    }
+    getUserAcademicProfileByUserName=(aUsername)=>{
+        return axios.get('http://localhost:8080/userAcademicProfile/' + aUsername)   
+    }
+
     
 
 }

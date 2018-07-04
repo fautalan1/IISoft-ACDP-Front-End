@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Label, Segment,Button, Grid, Accordion } from 'semantic-ui-react'
 import UserService from '../Services/UserService'
-
+import { Link } from 'react-router-dom'
 const styles=   {   rowProfileTittleStyle   : { width       :'50vh',
                                                 textAlign   :'left'},
                     tittleProfileStyle      : { width       :'80vh' }
@@ -16,16 +16,38 @@ export default class Perfil extends Component {
             activeInfoAccount: false,
             activeInfoPersonal: false,
             activeInfoProfessional: false,
-            user:"",
-            userName:""
+            user: "",
+            userProfesional: ""     ,
+            userAcademico:"" ,
+            userName:   ""
         }
         console.log(this.state.user)
     }
 
+    aaa=(aUser)=>{
+        this.userService.getUserProfesional(aUser)
+        .then(response =>   { 
+                            console.log(aUser)
+                            const user = response.data
+                            this.setState({
+                                userProfesional: user,
+            
+                            })
+
+                            })
+        .catch(err => { console.log(err) } )
+
+
+    }
+
+
     updateUser=(aUser)=>{
         console.log("Entre negro")
         this.userService.getUser(aUser)
-        .then(response =>   { const user = response.data
+        .then(response =>   { 
+                            this.aaa(aUser)
+                            console.log(aUser)
+                            const user = response.data
                             this.setState({
                                 user: user,
                                 userName:user.userName
@@ -33,10 +55,27 @@ export default class Perfil extends Component {
 
                             })
         .catch(err => { console.log(err) } )
+        
+
+
+        console.log(this.state.user)
+
+        // this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
+        //     console.log(aUser)
+        //     const user = response.data
+        //     this.setState({
+        //         userAcademico: user,
+
+        //     })
+
+        //     })
+        // .catch(err => { console.log(err) } )
     }
 
     componentDidMount = () => {
+        console.log("ok")
         this.updateUser(this.userService.anUserPerfil)
+        console.log(this.state.user)
     }
     
     handleInfoAccount = () => {
@@ -50,6 +89,7 @@ export default class Perfil extends Component {
     handleInfoProfessional = () => {
         this.setState({activeInfoProfessional: !this.state.activeInfoProfessional})
     }
+
 
     render() {
 
@@ -102,17 +142,17 @@ export default class Perfil extends Component {
                                     <Grid.Row>
                                         <Label style={styles.rowProfileTittleStyle} color='grey'>
                                             Trabajo: 
-                                            <Label.Detail >Un puesto de trabajo</Label.Detail> 
+                                            <Label.Detail >{this.state.userProfesional.work}</Label.Detail> 
                                         </Label>                                 
                                     </Grid.Row><Grid.Row>
                                         <Label style={styles.rowProfileTittleStyle} color='grey'>
                                             Repositorio Git: 
-                                            <Label.Detail >Un Repositorio Git</Label.Detail> 
+                                            <Label.Detail >{this.state.userProfesional.git}</Label.Detail> 
                                         </Label>                                 
                                     </Grid.Row><Grid.Row>
                                         <Label style={styles.rowProfileTittleStyle} color='grey'>
                                             Perfil LinkedIn: 
-                                            <Label.Detail >Un Perfil LinkedIn</Label.Detail> 
+                                            <Label.Detail >{this.state.userProfesional.linkedin}</Label.Detail> 
                                         </Label>                                 
                                     </Grid.Row>
                                 </Accordion.Content>
@@ -120,11 +160,12 @@ export default class Perfil extends Component {
                         </Grid.Row>
                     </Grid>
                 </Segment>
+
                 <Button
                             type='submit'
                             primary
                             fluid
-                            as
+                            as={Link} to='/editProfilePersonal'               name='editProfilePersonal'
                             >
                             Editar datos personales
                 </Button>
@@ -132,6 +173,7 @@ export default class Perfil extends Component {
                             type='submit'
                             primary
                             fluid
+                            as={Link} to='/editProfileProfesional'               name='editProfileProfesional'
                             >
                             Editar datos laborales
                 </Button>
@@ -142,6 +184,7 @@ export default class Perfil extends Component {
                             >
                             Editar datos academicos
                 </Button>
+           
             </div>    
     )
     }
