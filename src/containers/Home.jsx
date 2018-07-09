@@ -7,18 +7,16 @@ import PublicationComentaries from '../components/PublicationComentaries'
 const styles={
   gridSidebar: {
     height:'100vh',
-    width: '16%'
-
+    width: '25.8vh',
+    backgroundColor: 'rgb(31, 31, 31)'
   },
   gridPublication: {
     height:'100vh',
     width: '42%'
-
   },
   gridCommentary: {
     height:'100vh',
     width: '42%'
-
   },
   box:{
     backgroundColor: 'white',
