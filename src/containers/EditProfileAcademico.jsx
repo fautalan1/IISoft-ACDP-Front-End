@@ -61,14 +61,12 @@ export default class EditProfileAcademico extends Component {
         }
     }
 
-    verifyChange = (value) =>{ 
-        console.log(this.validateMateria(value))
-        this.verifyIcon(this.validateMateria(value))
-    }
+    verifyChange = (value) => this.verifyIcon(this.validateMateria(value) &&  value  !== "" )
+    
 
-    verifyMateria = () =>{ this.verifyChange(this.state.materia)}
+    verifyMateria = () => this.verifyChange(this.state.materia)
 
-    validateMateria=(value)=>  !this.userService.getApprovedSubjects().includes(value)
+    validateMateria=(value)=> !this.userService.getApprovedSubjects().includes(value.toLowerCase())
 
 
     render(){

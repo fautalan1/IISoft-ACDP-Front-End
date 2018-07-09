@@ -20,7 +20,7 @@ class UserService {
     }
 
     setApprovedSubjects(someApprovedSubjects){
-        this.approvedSubjects = someApprovedSubjects
+        this.approvedSubjects = someApprovedSubjects.map(approved => approved.toLowerCase())
     }
     isPerfilUser(){
        return this.anUserPerfil === this.GetUserLogged().userName
