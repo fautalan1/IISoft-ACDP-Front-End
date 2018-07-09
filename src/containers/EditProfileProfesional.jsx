@@ -15,15 +15,16 @@ const styles={
             width           : '50%',
         }
 }
-export default class EditProfilePersonal extends Component {
+export default class EditProfileProfesional extends Component {
     
     constructor(){
         super();
         this.userService = new UserService()
         this.state = {
-            name: "",
-            surname: "",
-            argsSignup: {}
+            work:"",
+            git:"",
+            linkedin:"",
+            argsSignup: {},
         }
     }
     
@@ -40,16 +41,12 @@ export default class EditProfilePersonal extends Component {
        
        
         const editPerfil ={
-           id:this.userService.GetUserLogged().id,
-           userID : this.userService.GetUserLogged().userID,
-           userName:  this.userService.GetUserLogged().userName,
-           name: this.state.name,
-           surname: this.state.surname,
-           mail: this.userService.GetUserLogged().mail,
-           birthDate: this.userService.GetUserLogged().birthDate
-
+           id:          this.userService.GetUserLogged().id,
+           userID:      this.userService.GetUserLogged().userID,
+           work:        this.state.work,
+           git:         this.state.git,
+           linkedin:    this.state.linkedin
         }
-        
         this.userService.postProfilePersonal(editPerfil).catch(err => alert(err))
     }
 
@@ -63,9 +60,11 @@ export default class EditProfilePersonal extends Component {
 
     verifyChange = (value) => this.verifyIcon(value !== "")
 
-    verifyName = () => this.verifyChange(this.state.name)
+    verifyWork = () => this.verifyChange(this.state.work)
 
-    verifySurname = () => this.verifyChange(this.state.surname)
+    verifyGit = () => this.verifyChange(this.state.git)
+    
+    verifyLinkedin=()=> this.verifyChange(this.state.linkedin)
 
 
     render(){
@@ -74,20 +73,28 @@ export default class EditProfilePersonal extends Component {
             <div style={styles.box}>
            
                         <Form.Field>
-                            <Form.Input name="name" 
+                            <Form.Input name="work" 
                                         onChange={this.handleChange}
                                         fluid
-                                        placeholder='name' 
-                                        icon={this.verifyName}
+                                        placeholder='work' 
+                                        icon={this.verifyWork}
                                         />
                         </Form.Field>
                                  
                         <Form.Field>
-                            <Form.Input name="surname" 
+                            <Form.Input name="git" 
                                         onChange={this.handleChange}
                                         fluid
-                                        placeholder='surname' 
-                                        icon={this.verifySurname}
+                                        placeholder='git' 
+                                        icon={this.verifyGit}
+                                        />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input name="linkedin" 
+                                        onChange={this.handleChange}
+                                        fluid
+                                        placeholder='linkedin' 
+                                        icon={this.verifyLinkedin}
                                         />
                         </Form.Field>
                 
@@ -95,9 +102,9 @@ export default class EditProfilePersonal extends Component {
                         type='submit'
                         primary
                         fluid
-                        disabled={this.state.name === "" ||
-                        this.state.birthDate  === "" ||
-                        this.state.surname    === ""}
+                        disabled={this.state.work === "" ||
+                        this.state.git  === "" ||
+                        this.state.linkedin    === ""}
                         onClick= {this.save}
                         as={Link} to='/'               name='Home'
                         >
