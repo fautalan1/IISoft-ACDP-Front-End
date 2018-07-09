@@ -11,6 +11,7 @@ import Users from './Users'
 
 import EditProfilePersonal    from './EditProfilePersonal'
 import EditProfileProfesional from './EditProfileProfesional'
+import EditProfileAcademico from './EditProfileAcademico'
 
 import UserService from '../Services/UserService'
 import SessionService from '../Services/SessionService';
@@ -101,6 +102,7 @@ export default class App extends Component {
             <Route exact path='/perfil'                    component ={Perfil}/>
             <Route exact path='/editProfilePersonal'       component ={EditProfilePersonal}/>
             <Route exact path='/editProfileProfesional'    component ={EditProfileProfesional}/>
+            <Route exact path='/editProfileAcademico'      component ={EditProfileAcademico}/>
             <Route exact path='/login'                     component ={Login}/>
             <Route exact path='/usuarios'                  component ={Users}/>
             <Route exact path='/register'                  component ={Register}/>

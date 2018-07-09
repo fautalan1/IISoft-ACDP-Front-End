@@ -16,36 +16,20 @@ export default class Perfil extends Component {
             activeInfoAccount: false,
             activeInfoPersonal: false,
             activeInfoProfessional: false,
-            user: "",
-            userProfesional: ""     ,
-            userAcademico:"" ,
-            userName:   ""
+            activeInfoAcademico:false,
+            user:"",
+            userProfesional:"",
+            userAcademico:"",
+            userName:""
         }
         console.log(this.state.user)
     }
-
-    aaa=(aUser)=>{
-        this.userService.getUserProfesional(aUser)
-        .then(response =>   { 
-                            console.log(aUser)
-                            const user = response.data
-                            this.setState({
-                                userProfesional: user,
-            
-                            })
-
-                            })
-        .catch(err => { console.log(err) } )
-
-
-    }
-
 
     updateUser=(aUser)=>{
         console.log("Entre negro")
         this.userService.getUser(aUser)
         .then(response =>   { 
-                            this.aaa(aUser)
+                            this.profesional(aUser)
                             console.log(aUser)
                             const user = response.data
                             this.setState({
@@ -60,17 +44,43 @@ export default class Perfil extends Component {
 
         console.log(this.state.user)
 
-        // this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
-        //     console.log(aUser)
-        //     const user = response.data
-        //     this.setState({
-        //         userAcademico: user,
-
-        //     })
-
-        //     })
-        // .catch(err => { console.log(err) } )
     }
+
+
+    profesional=(aUser)=>{
+        this.userService.getUserProfesional(aUser)
+        .then(response =>   { 
+                            this.academico(aUser)
+                            console.log(aUser)
+                            const user = response.data
+                            this.setState({
+                                userProfesional: user,
+            
+                            })
+
+                            })
+        .catch(err => { console.log(err) } )
+
+
+    }
+
+    academico=(aUser)=>{
+        this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
+            console.log(aUser)
+            const user = response.data
+            this.userService.setApprovedSubjects(user.approvedSubjects)
+            this.setState({
+                userAcademico: user,
+                
+
+            })
+
+            })
+        .catch(err => { console.log(err) } )
+    }
+
+
+
 
     componentDidMount = () => {
         console.log("ok")
@@ -89,7 +99,9 @@ export default class Perfil extends Component {
     handleInfoProfessional = () => {
         this.setState({activeInfoProfessional: !this.state.activeInfoProfessional})
     }
-
+    handleInfoAcedemico =()=>{
+        this.setState({activeInfoAcademico: !this.state.activeInfoAcademico})
+    }
 
     render() {
 
@@ -102,6 +114,7 @@ export default class Perfil extends Component {
                                 <Accordion.Title active={this.state.activeInfoAccount} onClick={this.handleInfoAccount}>
                                     <Label style={styles.tittleProfileStyle} color='black' ribbon>Informacion De La Cuenta</Label>
                                 </Accordion.Title>
+
                                 <Accordion.Content active={this.state.activeInfoAccount}>
                                     <Label style={styles.rowProfileTittleStyle} color='grey'>
                                         Nombre de Usuario: 
@@ -109,6 +122,7 @@ export default class Perfil extends Component {
                                     </Label>
                                 </Accordion.Content>
                     
+                                                        {/* Perfil Personal */}
                                 <Accordion.Title active={this.state.activeInfoPersonal} onClick={this.handleInfoPersonal}>
                                     <Label style={styles.tittleProfileStyle} color='black' ribbon>Informacion Personal</Label>
                                 </Accordion.Title>
@@ -135,6 +149,7 @@ export default class Perfil extends Component {
 
                                 </Accordion.Content>
                         
+                                                        {/* Perfil Profesional */}
                                 <Accordion.Title active={this.state.activeInfoProfessional} onClick={this.handleInfoProfessional}>
                                     <Label style={styles.tittleProfileStyle} color='black' ribbon>Informacion Profesional</Label>
                                 </Accordion.Title>
@@ -156,6 +171,30 @@ export default class Perfil extends Component {
                                         </Label>                                 
                                     </Grid.Row>
                                 </Accordion.Content>
+
+                                                            {/* PerfilAcademico */}
+
+                                <Accordion.Title active={this.state.activeInfoAcademico} onClick={this.handleInfoAcedemico}>
+                                    <Label style={styles.tittleProfileStyle} color='black' ribbon>Informacion Academica</Label>
+                                </Accordion.Title>
+                                
+                                <Accordion.Content active={this.state.activeInfoAcademico}>
+                                    <Grid.Row>
+                                        <Label style={styles.rowProfileTittleStyle} color='grey'>
+                                            Carrera: 
+                                            <Label.Detail >{this.state.userAcademico.career}</Label.Detail> 
+                                        </Label>                                 
+                                    </Grid.Row>
+                                    
+                                    <Grid.Row>
+                                        <Label style={styles.rowProfileTittleStyle} color='grey'>
+                                            Materias: [{this.state.userAcademico.approvedSubjects}]
+                                            {/* <Label.Detail >{this.convertList}</Label.Detail>  */}
+                                        </Label>                                 
+                                    </Grid.Row>
+                                </Accordion.Content>
+
+
                             </Accordion>
                         </Grid.Row>
                     </Grid>
@@ -167,7 +206,7 @@ export default class Perfil extends Component {
                             fluid
                             as={Link} to='/editProfilePersonal'               name='editProfilePersonal'
                             >
-                            Editar datos personales
+                            Editar datos Personales
                 </Button>
                 <Button
                             type='submit'
@@ -175,14 +214,15 @@ export default class Perfil extends Component {
                             fluid
                             as={Link} to='/editProfileProfesional'               name='editProfileProfesional'
                             >
-                            Editar datos laborales
+                            Editar datos Profesional
                 </Button>
                 <Button
                             type='submit'
                             primary
                             fluid
+                            as={Link} to='/editProfileAcademico'               name='editProfileAcademico'
                             >
-                            Editar datos academicos
+                            Agregar Materia
                 </Button>
            
             </div>    

@@ -6,6 +6,7 @@ class UserService {
 
     constructor () {
         this.anUserPerfil=""
+        this.approvedSubjects=""
         this.sessionService = new SessionService()
         if(!_UserService) {
             this.userLogged = null
@@ -13,6 +14,13 @@ class UserService {
         }
         else
             return _UserService
+    }
+    getApprovedSubjects(){
+       return this.approvedSubjects
+    }
+
+    setApprovedSubjects(someApprovedSubjects){
+        this.approvedSubjects = someApprovedSubjects
     }
     isPerfilUser(){
        return this.anUserPerfil === this.GetUserLogged().userName
