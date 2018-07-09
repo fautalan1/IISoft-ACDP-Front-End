@@ -19,7 +19,7 @@ const styles={
     width: '42%'
   },
   box:{
-    backgroundColor: 'white',
+    //backgroundColor: 'white',
     border: '1px solid #e6e6e6',
     textAlign: 'center',
     marginBottom: '1em',
