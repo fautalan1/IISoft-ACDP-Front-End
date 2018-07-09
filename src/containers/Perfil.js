@@ -19,7 +19,7 @@ export default class Perfil extends Component {
             activeInfoAcademico:false,
             user:"",
             userProfesional:"",
-            userAcademico:"",
+            userAcademico:{ approvedSubjects: []},
             userName:""
         }
         console.log(this.state.user)
@@ -66,9 +66,10 @@ export default class Perfil extends Component {
 
     academico=(aUser)=>{
         this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
-            console.log(aUser)
+            
             const user = response.data
             this.userService.setApprovedSubjects(user.approvedSubjects)
+            console.log(this.userService.getApprovedSubjects())
             this.setState({
                 userAcademico: user,
                 
@@ -182,13 +183,14 @@ export default class Perfil extends Component {
                                     <Grid.Row>
                                         <Label style={styles.rowProfileTittleStyle} color='grey'>
                                             Carrera: 
-                                            <Label.Detail >{this.state.userAcademico.career}</Label.Detail> 
+                                            <Label.Detail >{this.state.userAcademico.career}</Label.Detail>                                             
                                         </Label>                                 
                                     </Grid.Row>
                                     
                                     <Grid.Row>
                                         <Label style={styles.rowProfileTittleStyle} color='grey'>
-                                            Materias: [{this.state.userAcademico.approvedSubjects}]
+                                            Materias: {this.state.userAcademico.approvedSubjects.join(", ")}
+                                          
                                             {/* <Label.Detail >{this.convertList}</Label.Detail>  */}
                                         </Label>                                 
                                     </Grid.Row>
