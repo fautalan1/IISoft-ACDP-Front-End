@@ -13,10 +13,10 @@ export default class Perfil extends Component {
         super(props)    
         this.userService = new UserService()
         this.state = {
-            activeInfoAccount: false,
-            activeInfoPersonal: false,
-            activeInfoProfessional: false,
-            activeInfoAcademico:false,
+            activeInfoAccount: true,
+            activeInfoPersonal: true,
+            activeInfoProfessional: true,
+            activeInfoAcademico:true,
             user:"",
             userProfesional:"",
             userAcademico:{ approvedSubjects: []},

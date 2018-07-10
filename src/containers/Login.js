@@ -28,12 +28,13 @@ export default ({verify, handleChange}) => {
             `}</style>
             <Grid textAlign='center' style={styles.loginStyle} verticalAlign='middle' >
               <Grid.Column style={{ maxWidth: 500 }}>
-                <Header as='h2' color='teal' textAlign='center'>
+                
+                <Form size='large' >
+                  <Segment stacked inverted>
+                  <Header as='h2' color='teal' textAlign='center'>
                   {/* <Image src="../UNQ Black Logo.png" />  */}
                   Log-in to your account
                 </Header>
-                <Form size='large'>
-                  <Segment stacked>
                     <Form.Input name="name" onChange={handleChange} fluid icon='user' 
                                 iconPosition='left' placeholder='Username' />
                     <Form.Input
