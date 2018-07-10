@@ -9,12 +9,12 @@ import {validate} from 'email-validator'
 const styles={
                 box:{
                         margin          : 'auto',
-                        marginBottom    : 'center',
-                        backgroundColor : 'white',
+                        marginBottom    : '10px',
                         textAlign       : 'center',
-                        border          : '1px solid #e6e6e6',
-                        padding         : '5em', 
+                        border          : '1px solid #2d2e2f',
+                        padding         : '3em', 
                         width           : '50%',
+                        backgroundColor : 'rgb(27, 28, 29)'
                     }
             }
 

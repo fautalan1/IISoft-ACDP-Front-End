@@ -8,11 +8,11 @@ const styles={
     box:{
             margin          : 'auto',
             marginBottom    : 'center',
-            backgroundColor : 'white',
             textAlign       : 'center',
-            border          : '1px solid #e6e6e6',
+            border          : '1px solid #2d2e2f',
             padding         : '5em', 
             width           : '50%',
+            backgroundColor : 'rgb(27, 28, 29)'
         }
 }
 export default class EditProfileProfesional extends Component {
@@ -70,57 +70,46 @@ export default class EditProfileProfesional extends Component {
     render(){
         return (
             <div>
-            <div style={styles.box}>
-           
-                        <Form.Field>
-                            <Form.Input name="work" 
-                                        onChange={this.handleChange}
-                                        fluid
-                                        placeholder='work' 
-                                        icon={this.verifyWork}
-                                        />
-                        </Form.Field>
-                                 
-                        <Form.Field>
-                            <Form.Input name="git" 
-                                        onChange={this.handleChange}
-                                        fluid
-                                        placeholder='git' 
-                                        icon={this.verifyGit}
-                                        />
-                        </Form.Field>
-                        <Form.Field>
-                            <Form.Input name="linkedin" 
-                                        onChange={this.handleChange}
-                                        fluid
-                                        placeholder='linkedin' 
-                                        icon={this.verifyLinkedin}
-                                        />
-                        </Form.Field>
-                
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        disabled={this.state.work === "" ||
-                        this.state.git  === "" ||
-                        this.state.linkedin    === ""}
-                        onClick= {this.save}
-                        as={Link} to='/'               name='Home'
-                        >
-                        Confirmar
-                </Button>
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        as={Link} to='/'               name='Home'
-                        >
-                        Cancelar
-                </Button>
-               
+                <div style={styles.box}>
+                    <Form.Field>
+                        <Form.Input name="work" 
+                                    onChange={this.handleChange}
+                                    fluid
+                                    placeholder='work' 
+                                    icon={this.verifyWork}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <Form.Input name="git" 
+                                    onChange={this.handleChange}
+                                    fluid
+                                    placeholder='git' 
+                                    icon={this.verifyGit}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <Form.Input name="linkedin" 
+                                    onChange={this.handleChange}
+                                    fluid
+                                    placeholder='linkedin' 
+                                    icon={this.verifyLinkedin}/>
+                    </Form.Field>
+                    <Button.Group attached='bottom'>
+                        <Button content='Confirmar'
+                                color="instagram"
+                                disabled={  this.state.work === "" ||
+                                            this.state.git  === "" ||
+                                            this.state.linkedin === ""}
+                                onClick= {this.save}
+                                as={Link} 
+                                to='/'
+                                name='Home'/>
+                        <Button content='Cancelar'
+                                color="instagram"
+                                as={Link}
+                                to='/'
+                                name='Home'/>
+                    </Button.Group>
+                </div>
             </div>
-        </div>
         )
       }
 

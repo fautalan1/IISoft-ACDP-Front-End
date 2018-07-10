@@ -8,7 +8,7 @@ const styles={
   gridSidebar: {
     height:'100vh',
     width: '25.8vh',
-    backgroundColor: 'rgb(31, 31, 31)'
+    backgroundColor: 'rgb(27, 28, 29)'
   },
   gridPublication: {
     height:'100vh',

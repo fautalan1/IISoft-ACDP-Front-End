@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import {Menu, MenuItem} from 'semantic-ui-react'
 import CategoriesService from '../Services/CategoriesService';
 
 import styles11 from './style1.css'
@@ -8,10 +7,12 @@ export default class SidebarCategories extends Component {
 
   constructor(){
     super();
-    this.categoriesService = new CategoriesService()
+    this.categoriesService= new CategoriesService()
+    /* this.activeCategory   = -1 */
     this.state ={
+      activeCategory  : -1,
       categorySelected: "",
-      categories: [],
+      categories      : [],
     }
   }
 
@@ -25,6 +26,8 @@ export default class SidebarCategories extends Component {
   }
 
   handerOnClick(aIdCategory){
+    const activeCategory  = aIdCategory
+    this.setState({activeCategory})
     this.props.onClick(aIdCategory) 
     this.props.onAction("Publication")
   }
@@ -33,38 +36,21 @@ export default class SidebarCategories extends Component {
 
   
   render() {
-    const { activeCategory } = this.state
-
+    const activeCategory = this.state.activeCategory
+    const self = this
 
     return (
       <div className={styles11}>
         <ul>
-          <li><a class="active">Categorias</a></li>
-          {
-                    
-            this.state.categories.map(aCategory => 
-              <li><a key={aCategory.id}  
-              active={activeCategory === aCategory.id}
-              onClick={()=> this.handerOnClick(aCategory.id)}> {aCategory.name} </a></li>)
+          <li><a className="active">Categorias</a></li>
+          {      
+            self.state.categories.map(aCategory => 
+              <li key ={aCategory.id} ><a key={aCategory.id}
+              className={activeCategory === aCategory.id ? 'active' : 'inactive'}
+              onClick ={()=> this.handerOnClick(aCategory.id)}> {aCategory.name} </a></li>)
           }
         </ul> 
       </div>
-
-
-
-        // <Menu fluid vertical inverted>
-        //   <MenuItem name='Categorias' header/>
-        //   {
-            
-        //     this.state.categories.map(aCategory => 
-        //       <Menu.Item  key={aCategory.id} 
-        //                   active={activeCategory === aCategory.id}
-        //                   onClick={()=> this.handerOnClick(aCategory.id)}> 
-        //       {aCategory.name} 
-        //       </Menu.Item>)
-        //   }
-        // </Menu>
-
     )
   }
 }

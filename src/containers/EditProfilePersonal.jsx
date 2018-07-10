@@ -8,11 +8,11 @@ const styles={
     box:{
             margin          : 'auto',
             marginBottom    : 'center',
-            backgroundColor : 'white',
             textAlign       : 'center',
-            border          : '1px solid #e6e6e6',
+            border          : '1px solid #2d2e2f',
             padding         : '5em', 
             width           : '50%',
+            backgroundColor : 'rgb(27, 28, 29)'
         }
 }
 export default class EditProfilePersonal extends Component {
@@ -71,49 +71,39 @@ export default class EditProfilePersonal extends Component {
     render(){
         return (
             <div>
-            <div style={styles.box}>
-           
-                        <Form.Field>
-                            <Form.Input name="name" 
-                                        onChange={this.handleChange}
-                                        fluid
-                                        placeholder='name' 
-                                        icon={this.verifyName}
-                                        />
+                <div style={styles.box}>
+                    <Form.Field>
+                        <Form.Input name="name" 
+                                    onChange={this.handleChange}
+                                    fluid
+                                    placeholder='name' 
+                                    icon={this.verifyName}/>
                         </Form.Field>
-                                 
                         <Form.Field>
                             <Form.Input name="surname" 
                                         onChange={this.handleChange}
                                         fluid
                                         placeholder='surname' 
-                                        icon={this.verifySurname}
-                                        />
-                        </Form.Field>
-                
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        disabled={this.state.name === "" ||
-                        this.state.birthDate  === "" ||
-                        this.state.surname    === ""}
-                        onClick= {this.save}
-                        as={Link} to='/'               name='Home'
-                        >
-                        Confirmar
-                </Button>
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        as={Link} to='/'               name='Home'
-                        >
-                        Cancelar
-                </Button>
-               
+                                        icon={this.verifySurname}/>
+                    </Form.Field>
+                    <Button.Group attached='bottom'>
+                        <Button content='Confirmar'
+                                color="instagram"
+                                disabled={  this.state.name === "" ||
+                                            this.state.birthDate === "" ||
+                                            this.state.surname === ""}
+                                onClick= {this.save}
+                                as={Link}
+                                to='/'
+                                name='Home'/>
+                        <Button content='Cancelar'
+                                color="instagram"
+                                as={Link}
+                                to='/'
+                                name='Home'/>
+                    </Button.Group>
+                </div>
             </div>
-        </div>
         )
       }
 
