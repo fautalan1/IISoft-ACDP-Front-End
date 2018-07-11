@@ -46,21 +46,21 @@ export default class User extends Component {
 
     render(){
         return (
-          <div class="ui cards">
+          <div className="ui cards">
             {this.state.users.map (anUser =>
-                                          <div key={anUser.userName} class="card" style={styles.s1}>
-                                            <div class="content">
+                                          <div key={anUser.userName} className="card" style={styles.s1}>
+                                            <div className="content">
                                               <img  alt='Avatar Logo' 
-                                                    class="right floated mini ui image" 
+                                                    className="right floated mini ui image" 
                                                     src='./userLogo.png'/>
-                                              <div  class="header" style={styles.s2}>
+                                              <div  className="header" style={styles.s2}>
                                                 <Link style={styles.s2} 
                                                       to={'/perfil'} 
                                                       onClick={()=>this.changePerfil(anUser.userName)}>
                                                   {anUser.userName}
                                                 </Link> 
                                               </div>
-                                              <div class="meta" style={styles.s3}>
+                                              <div className="meta" style={styles.s3}>
                                                 {anUser.surname} {anUser.name}
                                               </div>
                                             </div>

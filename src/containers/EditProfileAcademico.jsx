@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserService from '../Services/UserService';
+import SessionService from '../Services/SessionService';
 import 'react-notifications/lib/notifications.css'
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
@@ -20,9 +21,9 @@ export default class EditProfileAcademico extends Component {
     constructor(){
         super();
         this.userService = new UserService()
+        this.sessionService = new SessionService()
         this.state = {
             materia: "",
-            
             argsSignup: {}
         }
     }
@@ -34,19 +35,30 @@ export default class EditProfileAcademico extends Component {
         this.setState({ [name]: argsSignup[name]})
     }
 
-    save=()=>{
-        console.log(this.userService.GetUserLogged())
+    save = () => {
+        
         this.userService.setUserPerfil(this.userService.GetUserLogged().userName)
-       
+       var lista = this.userService.GetUserLogged().approvedSubjects
+       var lista2 = lista.concat([this.state.materia])
        
         const editPerfil ={
-           id:      this.userService.getAcademico().id,
-           userID : this.userService.getAcademico().userID,
-           career : this.userService.getAcademico().career,
-           approvedSubjects: this.userService.getApprovedSubjects().push(this.state.materia)
-        }
+           id:      this.userService.GetUserLogged().id,
+           userID : this.userService.GetUserLogged().userID,
+           userName : this.sessionService.getUserNameOfToken(),
+           name: this.userService.GetUserLogged().name,
+           surname: this.userService.GetUserLogged().surname,
+           mail: this.userService.GetUserLogged().mail,
+           birthDate: this.userService.GetUserLogged().birthDate,
 
-        this.userService.postProfileAcademico(editPerfil).catch(err => alert(err))
+           linkedin:     this.userService.GetUserLogged().linkedin,
+           git:          this.userService.GetUserLogged().git,
+           work:         this.userService.GetUserLogged().work,
+           career : this.userService.GetUserLogged().career,
+
+           approvedSubjects: lista2
+        }
+        // console.log(editPerfil)
+        this.userService.postProfileWork(editPerfil).catch(err => console.log(err))
     }
 
     verifyIcon = (aBool) => {
@@ -80,9 +92,9 @@ export default class EditProfileAcademico extends Component {
                     <Button.Group attached='bottom'>
                         <Button content='Confirmar'
                                 color="instagram"
-                                disabled={!this.validateMateria(this.state.materia) ||  this.state.materia  === "" }
                                 onClick= {this.save}
-                                as={Link} 
+                                disabled={!this.validateMateria(this.state.materia) ||  this.state.materia  === "" }
+                                as={Link}
                                 to='/'
                                 name='Home'/>
                         <Button content='Cancelar'
