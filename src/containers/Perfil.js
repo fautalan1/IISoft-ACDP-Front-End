@@ -25,7 +25,6 @@ export default class Perfil extends Component {
             activeInfoProfessional: true,
             activeInfoAcademico:true,
             user:"",
-            userProfesional:"",
             userAcademico:{ approvedSubjects: []},
             userName:"",
             showButtons: true
@@ -37,14 +36,17 @@ export default class Perfil extends Component {
         console.log("Entre negro")
         this.userService.getUser(aUser)
         .then(response =>   { 
-                            this.profesional(aUser)
+                            
                             console.log(aUser)
                             const user = response.data
+                            this.userService.SetUser(user)
                             this.setState({
                                 user: user,
-                                userName:user.userName
+                                userName:user.userName,
+                                userAcademico: user
                             })
                             this.canEdit()
+                            console.log(this.state.user)
                             })
         .catch(err => { console.log(err) } )
         
@@ -55,36 +57,36 @@ export default class Perfil extends Component {
     }
 
 
-    profesional=(aUser)=>{
-        this.userService.getUserProfesional(aUser)
-        .then(response =>   { 
-                            this.academico(aUser)
-                            console.log(aUser)
-                            const user = response.data
-                            this.userService.setWork(user)
-                            this.setState({
-                                userProfesional: user,
-                            })
-                            })
-        .catch(err => { console.log(err) } )
-    }
+    // profesional=(aUser)=>{
+    //     this.userService.getUserProfesional(aUser)
+    //     .then(response =>   { 
+    //                         this.academico(aUser)
+    //                         console.log(aUser)
+    //                         const user = response.data
+    //                         this.userService.setWork(user)
+    //                         this.setState({
+    //                             userProfesional: user,
+    //                         })
+    //                         })
+    //     .catch(err => { console.log(err) } )
+    // }
 
-    academico=(aUser)=>{
-        this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
+    // academico=(aUser)=>{
+    //     this.userService.getUserAcademicProfileByUserName(aUser).then(response =>   { 
             
-            const user = response.data
-            this.userService.setApprovedSubjects(user.approvedSubjects)
-            this.userService.setAcademico(user)
-            console.log(this.userService.getApprovedSubjects())
-            this.setState({
-                userAcademico: user,
+    //         const user = response.data
+    //         this.userService.setApprovedSubjects(user.approvedSubjects)
+    //         this.userService.setAcademico(user)
+    //         console.log(this.userService.getApprovedSubjects())
+    //         this.setState({
+    //             userAcademico: user,
                 
 
-            })
+    //         })
 
-            })
-        .catch(err => { console.log(err) } )
-    }
+    //         })
+    //     .catch(err => { console.log(err) } )
+    // }
 
     canEdit=()=>{
         const aBool = this.state.userName === this.sessionService.getUserNameOfToken()
@@ -175,17 +177,17 @@ export default class Perfil extends Component {
                                         <Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
                                                 Trabajo: 
-                                                <Label.Detail >{this.state.userProfesional.work}</Label.Detail> 
+                                                <Label.Detail >{this.state.user.work}</Label.Detail> 
                                             </Label>                                 
                                         </Grid.Row><Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
                                                 Repositorio Git: 
-                                                <Label.Detail >{this.state.userProfesional.git}</Label.Detail> 
+                                                <Label.Detail >{this.state.user.git}</Label.Detail> 
                                             </Label>                                 
                                         </Grid.Row><Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
                                                 Perfil LinkedIn: 
-                                                <Label.Detail >{this.state.userProfesional.linkedin}</Label.Detail> 
+                                                <Label.Detail >{this.state.user.linkedin}</Label.Detail> 
                                             </Label>                                 
                                         </Grid.Row>
                                         <Button circular
@@ -206,14 +208,14 @@ export default class Perfil extends Component {
                                         <Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
                                                 Carrera: 
-                                                <Label.Detail >{this.state.userAcademico.career}</Label.Detail>                                             
+                                                <Label.Detail >{this.state.user.career}</Label.Detail>                                             
                                             </Label>                                 
                                         </Grid.Row>
                                         <Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
-                                                Materias: {this.state.userAcademico.approvedSubjects.join(", ")}
+                                                Materias: {this.state.userAcademico.approvedSubjects}
                                             </Label>                                 
-                                        </Grid.Row>
+                                        </Grid.Row> 
                                         <Button circular
                                                 color   ='instagram'
                                                 content ='Agregar Materia'

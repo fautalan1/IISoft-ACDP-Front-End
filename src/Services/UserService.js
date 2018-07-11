@@ -85,20 +85,18 @@ class UserService {
     }
 
     postProfileWork=(profile)=> {
-        
-        console.log(profile)
-        return axios.post('http://localhost:8080/userWorkProfile',profile, this.sessionService.getAuth()) }
+        return axios.post('http://localhost:8080/user',profile, this.sessionService.getAuth()) }
     
     
     postProfileAcademico=(profile)=>{
-        return axios.post('http://localhost:8080/userAcademicProfile',profile, this.sessionService.getAuth())
+        return axios.post('http://localhost:8080/user',profile, this.sessionService.getAuth())
     }
 
     getUserProfesional=(aUsername)=>{
-        return axios.get('http://localhost:8080/userWorkProfile/' + aUsername)        
+        return axios.get('http://localhost:8080/user/' + aUsername)        
     }
     getUserAcademicProfileByUserName=(aUsername)=>{
-        return axios.get('http://localhost:8080/userAcademicProfile/' + aUsername)   
+        return axios.get('http://localhost:8080/user/' + aUsername)   
     }
 
     

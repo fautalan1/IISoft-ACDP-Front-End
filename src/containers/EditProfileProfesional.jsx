@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserService from '../Services/UserService';
+import SessionService from '../Services/SessionService';
 import 'react-notifications/lib/notifications.css'
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
@@ -20,6 +21,7 @@ export default class EditProfileProfesional extends Component {
     constructor(){
         super();
         this.userService = new UserService()
+        this.sessionService = new SessionService()
         this.state = {
             work:"",
             git:"",
@@ -37,16 +39,18 @@ export default class EditProfileProfesional extends Component {
 
     save=()=>{
         this.userService.setUserPerfil(this.userService.GetUserLogged().userName)
-        console.log(this.userService.getWork())
+
         const editPerfil ={
-           id:          this.userService.getWork().id,
-           userID:      this.userService.getWork().userID,
-           
+           id:          this.userService.GetUserLogged().id,
+           userID:      this.userService.GetUserLogged().userID,
+           userName:    this.sessionService.getUserNameOfToken(),
            linkedin:    this.state.linkedin,
            git:         this.state.git,
            work:        this.state.work
         }
+
         console.log(editPerfil)
+
         this.userService.postProfileWork(editPerfil).catch(err => console.log(err))
     }
 

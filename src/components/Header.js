@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Menu, Image } from 'semantic-ui-react'
 import UserService from '../Services/UserService';
+import SessionService from '../Services/SessionService';
 
 export default class Header extends Component {
 
   constructor(props) { 
     super(props);
+    this.sessionService = new SessionService()
     this.state = {
       activeItem: '/'
     }
@@ -19,7 +21,7 @@ export default class Header extends Component {
 
   changePefil=()=>{
     let servi = new UserService()
-    servi.setUserPerfil(servi.GetUserLogged().userName)
+    servi.setUserPerfil(this.sessionService.getUserNameOfToken())
   }
 
   render() {
