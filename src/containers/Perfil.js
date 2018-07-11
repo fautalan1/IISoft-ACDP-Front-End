@@ -61,15 +61,12 @@ export default class Perfil extends Component {
                             this.academico(aUser)
                             console.log(aUser)
                             const user = response.data
+                            this.userService.setWork(user)
                             this.setState({
                                 userProfesional: user,
-            
                             })
-
                             })
         .catch(err => { console.log(err) } )
-
-
     }
 
     academico=(aUser)=>{
@@ -77,6 +74,7 @@ export default class Perfil extends Component {
             
             const user = response.data
             this.userService.setApprovedSubjects(user.approvedSubjects)
+            this.userService.setAcademico(user)
             console.log(this.userService.getApprovedSubjects())
             this.setState({
                 userAcademico: user,

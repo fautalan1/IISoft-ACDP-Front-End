@@ -22,7 +22,7 @@ export default class EditProfileAcademico extends Component {
         this.userService = new UserService()
         this.state = {
             materia: "",
-
+            
             argsSignup: {}
         }
     }
@@ -40,17 +40,13 @@ export default class EditProfileAcademico extends Component {
        
        
         const editPerfil ={
-           id:this.userService.GetUserLogged().id,
-           userID : this.userService.GetUserLogged().userID,
-           userName:  this.userService.GetUserLogged().userName,
-           name: this.state.name,
-           surname: this.state.surname,
-           mail: this.userService.GetUserLogged().mail,
-           birthDate: this.userService.GetUserLogged().birthDate
-
+           id:      this.userService.getAcademico().id,
+           userID : this.userService.getAcademico().userID,
+           career : this.userService.getAcademico().career,
+           approvedSubjects: this.userService.getApprovedSubjects().push(this.state.materia)
         }
-        
-        this.userService.postProfilePersonal(editPerfil).catch(err => alert(err))
+
+        this.userService.postProfileAcademico(editPerfil).catch(err => alert(err))
     }
 
     verifyIcon = (aBool) => {

@@ -7,6 +7,8 @@ class UserService {
     constructor () {
         this.anUserPerfil=""
         this.approvedSubjects=""
+        this.userAcademico=""
+        this.userWork=""
         this.sessionService = new SessionService()
         if(!_UserService) {
             this.userLogged = null
@@ -17,6 +19,22 @@ class UserService {
     }
     getApprovedSubjects(){
        return this.approvedSubjects
+    }
+
+    getAcademico(){
+        return this.userAcademico
+    }
+    getWork(){
+        return this.userWork
+    }
+
+    setAcademico(anUser){
+        this.userAcademico = anUser
+    }
+
+
+    setWork(anUser){
+        this.userWork= anUser
     }
 
     setApprovedSubjects(someApprovedSubjects){
@@ -64,6 +82,16 @@ class UserService {
 
     postProfilePersonal=(profile)=>{
         return axios.post('http://localhost:8080/user',profile, this.sessionService.getAuth())
+    }
+
+    postProfileWork=(profile)=> {
+        
+        console.log(profile)
+        return axios.post('http://localhost:8080/userWorkProfile',profile, this.sessionService.getAuth()) }
+    
+    
+    postProfileAcademico=(profile)=>{
+        return axios.post('http://localhost:8080/userAcademicProfile',profile, this.sessionService.getAuth())
     }
 
     getUserProfesional=(aUsername)=>{

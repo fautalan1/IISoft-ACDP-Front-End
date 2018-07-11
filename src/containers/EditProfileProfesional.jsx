@@ -36,18 +36,18 @@ export default class EditProfileProfesional extends Component {
     }
 
     save=()=>{
-        console.log(this.userService.GetUserLogged())
         this.userService.setUserPerfil(this.userService.GetUserLogged().userName)
-       
-       
+        console.log(this.userService.getWork())
         const editPerfil ={
-           id:          this.userService.GetUserLogged().id,
-           userID:      this.userService.GetUserLogged().userID,
-           work:        this.state.work,
+           id:          this.userService.getWork().id,
+           userID:      this.userService.getWork().userID,
+           
+           linkedin:    this.state.linkedin,
            git:         this.state.git,
-           linkedin:    this.state.linkedin
+           work:        this.state.work
         }
-        this.userService.postProfilePersonal(editPerfil).catch(err => alert(err))
+        console.log(editPerfil)
+        this.userService.postProfileWork(editPerfil).catch(err => console.log(err))
     }
 
     verifyIcon = (aBool) => {
