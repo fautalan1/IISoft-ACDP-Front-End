@@ -213,7 +213,7 @@ export default class Perfil extends Component {
                                         </Grid.Row>
                                         <Grid.Row>
                                             <Label style={styles.rowProfileTittleStyle} color='grey'>
-                                                Materias: {this.state.userAcademico.approvedSubjects}
+                                                Materias: {this.state.userAcademico.approvedSubjects.join(', ')}
                                             </Label>                                 
                                         </Grid.Row> 
                                         <Button circular
