@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
 import UserService from '../Services/UserService';
 import { Link } from 'react-router-dom';
-import {Form, Button, Segment, Item, Grid } from 'semantic-ui-react'
+import {Form, Button, Segment, Item, Grid, Label, Message } from 'semantic-ui-react'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 import SuscribeService from '../Services/SuscribeService';
 import PublicationService from '../Services/PublicationService';
+
+const styles= {
+                publicationDiv      : {
+                                        border          : '1px solid #2d2e2f',
+                                        backgroundColor : 'rgb(27, 28, 29)'
+                                      },
+                publication         : { width           : '57vh',
+                                        padding         : '0.5em',
+                                        border          : '1px solid #2d2e2f',
+                                        backgroundColor : '#2d2e2f'},
+                publicationContent  : { width : '50vh' },
+                titlePublication    : { width : '62vh' },
+                image               : { width :"3vh", 
+                                        height:"3vh" },
+                autor               : { color : 'white'},
+                subscribersButton   : { marginRight:'63px'}
+              }
 export default class ListPublication extends Component {
 
   constructor(props){
@@ -101,33 +118,43 @@ export default class ListPublication extends Component {
   render(){
     console.log("Hago Render")
     return (
-      <Segment inverted  color='violet'  >
-        <Segment inverted  color='violet'  >
+      <Segment style={styles.publicationDiv}>
+        <Segment inverted>
             {this.state.publication.map(aPublication =>
                         <Grid.Row key={aPublication.id} > 
                           <Item.Group>
-                          <Item>
-                            {/* {<Item.Image size='tiny' src='../image/icono.png' />} */}
-                      
+                          <Item style={styles.publication}>
                             <Item.Content>
-                            
                               <Item.Header as='a' onClick={()=>this.props.changeStateToComentaryHandler(aPublication.id)}> 
-                                <p className="" >{aPublication.title}</p>
+                                <Label ribbon color='blue' style={styles.titlePublication}>{aPublication.title}</Label>
                               </Item.Header>
+                              
                               <Item.Meta onClick={() =>this.changePerfil(aPublication.whoPublishedIt)}>
-                                <Link to={'/perfil'}>{aPublication.whoPublishedIt}</Link>
+                                <Link to={'/perfil'} style={styles.autor}>
+                                  <img  alt       ='Avatar Logo' 
+                                        className ="left floated mini ui image" 
+                                        src       ='./userLogo.png'
+                                        style     ={styles.image}/>
+                                  {aPublication.whoPublishedIt}
+                                </Link>
                               </Item.Meta>
-                              <Item.Description>
-                                <p className="">{aPublication.text } </p>
+
+                              <Item.Description style={styles.publicationContent}>
+                                <Message >{aPublication.text}</Message>
                               </Item.Description>
 
                               <Item.Extra>
-                                <div className="">{Date(aPublication.date)}</div>
-                              </Item.Extra>
-                                Subscribers: [{aPublication.subscribers.join(' , ')}], Cant: {aPublication.cantSubscribers}
-                              <Item.Extra>                                
-                                <Button content={this.suscribeText(aPublication)} labelPosition='left' icon='edit' 
-                                color= 'blue' onClick ={ () => this.suscribe(aPublication) } />
+                                <Label>
+                                  Subscribers: {aPublication.subscribers.join(' , ')}
+                                </Label>
+                                <Button content       ={this.suscribeText(aPublication)} 
+                                        floated       ='right'
+                                        labelPosition ='left' 
+                                        icon          ='edit' 
+                                        color         ='instagram'
+                                        onClick       ={ () => this.suscribe(aPublication) } 
+                                        size          ='mini'
+                                        style         ={styles.subscribersButton}/>
                               </Item.Extra>
                           
                             </Item.Content>
@@ -144,7 +171,7 @@ export default class ListPublication extends Component {
               <Form.TextArea onInput={(e, { value }) =>this.registryTitle(value)}/>
               <h3 className=""> Text </h3>
               <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
-              <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postPublication() } />
+              <Button content='Confirm' labelPosition='left' icon='edit' color= 'instagram' onClick ={ ()=> this.postPublication() } />
         </Form>
         
       </Segment>

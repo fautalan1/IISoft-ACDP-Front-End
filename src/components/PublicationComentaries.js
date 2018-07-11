@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import ComentariesService from '../Services/ComentariesService';
 import UserService from '../Services/UserService';
 
+const styles= {
+                box     :{
+                            border          : '1px solid #2d2e2f',
+                            backgroundColor : 'rgb(27, 28, 29)'
+                          },
+                comment :{ borderBottom: 'solid 1px #2d2e2f' }
+              }
 export default class PublicationComentaries extends Component {
 
   constructor(props)
@@ -45,7 +52,6 @@ export default class PublicationComentaries extends Component {
     this.reply = aReply
   }
 
-    //*NO ANDA ESTO VIEJO*//
   shouldComponentUpdate=(nextProps, nextState)=>{
     console.log("debo Actualizar?")
     return (nextProps.idPublication !== this.props.idPublication)|| 
@@ -68,8 +74,6 @@ export default class PublicationComentaries extends Component {
     servi.setUserPerfil(userPerfil)
   }
 
-
-
   /* Arma el codigo html con todos los comentarios */
   comentaries=()=>
   {
@@ -77,15 +81,14 @@ export default class PublicationComentaries extends Component {
     return (
               <div>
                 {this.state.commentaries.map (
-                                          aComentaries => <Comment key={aComentaries.id}>
+                                          aComentaries => <Comment key={aComentaries.id} style={styles.comment}>
                                                             <Comment.Content>
+                                                              <img  alt='Avatar Logo' 
+                                                                    className="left floated mini ui image" 
+                                                                    src='./userLogo.png'/>
                                                               <Comment.Author onClick={()=>this.changePerfil(aComentaries.whoPublishedIt)}>
                                                                 <Link to={'/perfil'}>{aComentaries.whoPublishedIt}</Link>
-                                                                {/* <p className="commentAutor">{aComentaries.whoPublishedIt}  {Date(aComentaries.date)}</p> */}
                                                               </Comment.Author>
-                                                              {/* <Comment.Metadata>
-                                                                <div className="commentHour">{Date(aComentaries.date)}</div>
-                                                              </Comment.Metadata> */}
                                                               <Comment.Text>
                                                                 <p className="commentText">{aComentaries.text}</p>
                                                               </Comment.Text>
@@ -96,20 +99,22 @@ export default class PublicationComentaries extends Component {
   }
 
   render() {
-
-
     return (
       <div>
-      <Segment inverted color= 'violet' >
-        <Comment.Group>
-          {this.comentaries()}
-          <Form reply inverted>
-            <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
-            {/* @todo validacion de contenido del formulario para el boton*/}
-           <Button content='Confirm' labelPosition='left' icon='edit' color= 'black' onClick ={ ()=> this.postCommentary() } />
-          </Form>
-        </Comment.Group>
-      </Segment>
+        <Segment style={styles.box}>
+          <Comment.Group>
+            {this.comentaries()}
+            <Form reply inverted>
+              <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
+              {/* @todo validacion de contenido del formulario para el boton*/}
+            <Button  content='Confirm' 
+                      labelPosition='left' 
+                      icon='edit' 
+                      color= 'instagram' 
+                      onClick ={ ()=> this.postCommentary() } />
+            </Form>
+          </Comment.Group>
+        </Segment>
       </div>
     )
   }
