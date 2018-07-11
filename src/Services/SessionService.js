@@ -36,6 +36,11 @@ class SessionService {
     return header
   }
 
+  getUserNameOfToken = () => {
+    const aToken = JSON.parse(localStorage.getItem('token'))
+    return aToken.username
+  }
+
 
 }
 

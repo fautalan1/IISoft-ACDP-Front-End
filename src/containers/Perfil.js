@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Label, Segment,Button, Grid, Accordion } from 'semantic-ui-react'
 import UserService from '../Services/UserService'
 import { Link } from 'react-router-dom'
+import SessionService from '../Services/SessionService';
+
 const styles=   {   rowProfileTittleStyle   : { width           :'50vh',
                                                 textAlign       :'left'},
                     tittleProfileStyle      : { width           :'80vh'},
@@ -16,6 +18,7 @@ export default class Perfil extends Component {
     constructor(props) {
         super(props)    
         this.userService = new UserService()
+        this.sessionService = new SessionService()
         this.state = {
             activeInfoAccount: true,
             activeInfoPersonal: true,
@@ -24,7 +27,8 @@ export default class Perfil extends Component {
             user:"",
             userProfesional:"",
             userAcademico:{ approvedSubjects: []},
-            userName:""
+            userName:"",
+            showButtons: true
         }
         console.log(this.state.user)
     }
@@ -40,7 +44,7 @@ export default class Perfil extends Component {
                                 user: user,
                                 userName:user.userName
                             })
-
+                            this.canEdit()
                             })
         .catch(err => { console.log(err) } )
         
@@ -84,7 +88,12 @@ export default class Perfil extends Component {
         .catch(err => { console.log(err) } )
     }
 
-
+    canEdit=()=>{
+        const aBool = this.state.userName === this.sessionService.getUserNameOfToken()
+        this.setState({
+            showButtons: aBool
+        })
+    }
 
 
     componentDidMount = () => {
@@ -155,6 +164,7 @@ export default class Perfil extends Component {
                                                 as      ={Link} 
                                                 to      ='/editProfilePersonal'
                                                 name    ='editProfilePersonal'
+                                                disabled={!this.state.showButtons}
                                                 style   ={styles.editButton}/>
                                     </Accordion.Content>
                                     
@@ -186,6 +196,7 @@ export default class Perfil extends Component {
                                                 as      ={Link} 
                                                 to      ='/editProfileProfesional'
                                                 name    ='editProfileProfesional'
+                                                disabled={!this.state.showButtons}
                                                 style   ={styles.editButton}/>
                                     </Accordion.Content>
 
@@ -211,7 +222,9 @@ export default class Perfil extends Component {
                                                 as      ={Link}
                                                 to      ='/editProfileAcademico'
                                                 name    ='editProfileAcademico'
+                                                disabled={!this.state.showButtons}
                                                 style   ={styles.editButton}/>
+                                                
                                     </Accordion.Content>
                                 </Accordion>
                             </Grid.Row>
