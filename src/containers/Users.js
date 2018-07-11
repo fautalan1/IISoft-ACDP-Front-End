@@ -1,8 +1,23 @@
 import React, { Component } from 'react'
-import { Segment, Item, Grid } from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
 import UserService from '../Services/UserService'
-export default class Home extends Component {
+import { Link } from 'react-router-dom';
+
+const styles=   {   s1  : { 
+                            border          :'1px solid #2d2e2f',
+                            backgroundColor :'rgb(27, 28, 29)',
+                            marginLeft      :'45px',
+                            padding         :'0px',
+                            margin          :'22px',
+                            align           :'center',
+                          },
+                    s2  : {
+                            color           :'#fff2f2',
+                            large           :'5px'
+                          },
+                    s3  : { color           :'#e6e6e6' },
+                }
+
+export default class User extends Component {
 
     constructor() { 
         super();
@@ -31,35 +46,28 @@ export default class Home extends Component {
 
     render(){
         return (
-          <Segment inverted  color='yellow'  >
-              {this.state.users.map(anUser =>
-                          <Grid.Row key={anUser.userName} > 
-                            <Item.Group>
-                            <Item>
-                              {/* {<Item.Image size='tiny' src='../image/icono.png' />} */}
-                        
-                              <Item.Content>
-                              
-                                <Item.Header onClick={()=>this.changePerfil(anUser.userName)}> 
-                                <Link to='/perfil'>{anUser.userName}</Link>
-                                </Item.Header>
-                                <Item.Description>
-                                  <p className="">{anUser.name } </p>
-                                </Item.Description>
-  
-                                <Item.Extra>
-                                  
-                                  <div className="">{Date(anUser.date)}</div>
-                                </Item.Extra>
-                            
-                              </Item.Content>
-                            </Item>
-                          </Item.Group>
-                        </Grid.Row>
-              )}
-            
-  
-          </Segment>
+          <div class="ui cards">
+            {this.state.users.map (anUser =>
+                                          <div key={anUser.userName} class="card" style={styles.s1}>
+                                            <div class="content">
+                                              <img  alt='Avatar Logo' 
+                                                    class="right floated mini ui image" 
+                                                    src='./userLogo.png'/>
+                                              <div  class="header" style={styles.s2}>
+                                                <Link style={styles.s2} 
+                                                      to={'/perfil'} 
+                                                      onClick={()=>this.changePerfil(anUser.userName)}>
+                                                  {anUser.userName}
+                                                </Link> 
+                                              </div>
+                                              <div class="meta" style={styles.s3}>
+                                                {anUser.surname} {anUser.name}
+                                              </div>
+                                            </div>
+                                          </div>
+                                  )
+            }
+          </div>
         )
       }
 

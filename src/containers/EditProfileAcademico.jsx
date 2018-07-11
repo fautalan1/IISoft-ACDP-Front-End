@@ -8,11 +8,11 @@ const styles={
     box:{
             margin          : 'auto',
             marginBottom    : 'center',
-            backgroundColor : 'white',
             textAlign       : 'center',
-            border          : '1px solid #e6e6e6',
+            border          : '1px solid #2d2e2f',
             padding         : '5em', 
             width           : '50%',
+            backgroundColor : 'rgb(27, 28, 29)'
         }
 }
 export default class EditProfileAcademico extends Component {
@@ -72,38 +72,31 @@ export default class EditProfileAcademico extends Component {
     render(){
         return (
             <div>
-            <div style={styles.box}>
-           
-                        <Form.Field>
-                            <Form.Input name="materia" 
-                                        onChange={this.handleChange}
-                                        fluid
-                                        placeholder='materia' 
-                                        icon={this.verifyMateria}
-                                        />
-                        </Form.Field>
-                                  
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        disabled={!this.validateMateria(this.state.materia) ||  this.state.materia  === "" }
-                        onClick= {this.save}
-                        as={Link} to='/'               name='Home'
-                        >
-                        Confirmar
-                </Button>
-                <Button
-                        type='submit'
-                        primary
-                        fluid
-                        as={Link} to='/'               name='Home'
-                        >
-                        Cancelar
-                </Button>
-               
+                <div style={styles.box}>
+                    <Form.Field>
+                        <Form.Input name="materia" 
+                                    onChange={this.handleChange}
+                                    fluid
+                                    placeholder='materia' 
+                                    icon={this.verifyMateria}
+                                    />
+                    </Form.Field>
+                    <Button.Group attached='bottom'>
+                        <Button content='Confirmar'
+                                color="instagram"
+                                disabled={!this.validateMateria(this.state.materia) ||  this.state.materia  === "" }
+                                onClick= {this.save}
+                                as={Link} 
+                                to='/'
+                                name='Home'/>
+                        <Button content='Cancelar'
+                                color="instagram"
+                                as={Link}
+                                to='/'
+                                name='Home'/>
+                    </Button.Group>
+                </div>
             </div>
-        </div>
         )
       }
 

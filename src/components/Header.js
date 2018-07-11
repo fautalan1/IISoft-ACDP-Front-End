@@ -28,23 +28,25 @@ export default class Header extends Component {
   
     return (
       
-        <Menu inverted attached='top'>
+        <Menu inverted attached='top' style={{borderBottom:'solid 1px #2d2e2f'}}>
           <Menu.Item icon > 
-            <Image size="mini" src="../UNQ Black Logo.png" />
+            <Image size="mini" src="../UNQ Black Logo Transparent.png" />
           </Menu.Item>
           
-          <Menu.Item as={Link} to='/'                                    name='Home'/>
-          <Menu.Item onClick={()=>this.changePefil()} as={Link} to='/perfil'                               name='Perfil'/>
-          <Menu.Item as={Link} to='/usuarios'                           name='Users'/>
-          <Menu.Item as={Link} to='/register'                           name='Registrar Usuario'/>
-{/*           <Menu.Item as={Link} to='/schedule' name='Schedule'/>
-          
-          <Menu.Item
-            name='friends'
-            active={activeItem === 'friends'}
-            onClick={this.handleItemClick}
-          /> */}
-          <Menu.Menu position='right'>
+          <Menu.Item  as      ={Link} 
+                      to      ='/'
+                      name    ='Home'/>
+          <Menu.Item  onClick ={()=>this.changePefil()} 
+                      as      ={Link} 
+                      to      ='/perfil'
+                      name    ='Perfil'/>
+          <Menu.Item  as      ={Link} 
+                      to      ='/usuarios'
+                      name    ='Users'/>
+          <Menu.Item  as      ={Link}
+                      to      ='/register'
+                      name    ='Registrar Usuario'/>
+          <Menu.Menu  position='right'>
             <Menu.Item>
               <Input icon='search' placeholder='Search Publications...' />
             </Menu.Item>

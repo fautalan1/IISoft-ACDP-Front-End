@@ -1,4 +1,6 @@
 body {
       background-image: url('../src/image/fondo3.jpeg');
       background-repeat: no-repeat;
-      background-size: cover;}
+      background-size: 204vh;
+      background-attachment: fixed;}
+      
