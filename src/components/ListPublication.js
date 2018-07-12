@@ -21,7 +21,10 @@ const styles= {
                 image               : { width :"3vh", 
                                         height:"3vh" },
                 autor               : { color : 'white'},
-                subscribersButton   : { marginRight:'63px'}
+                subscribersButton   : { marginRight:'63px'},
+                publication2: {
+                  color : 'white'
+                }
               }
 export default class ListPublication extends Component {
 
@@ -92,7 +95,8 @@ export default class ListPublication extends Component {
                           }
 
     this.publicationService.postNewPublication(aNewPublication)
-                           .then(res => { this.setState({publication: []})})
+                           .then(res => { this.resetForm()
+                                          this.setState({publication: []})})
   }
 
   suscribe=(aPublication)=>{   
@@ -115,6 +119,12 @@ export default class ListPublication extends Component {
     servi.setUserPerfil(userPerfil)
   }
  
+  resetForm = () =>{
+    this.reply        = ""
+    this.titleOfReply = ""
+    document.getElementsByClassName('reply inverted').item(0).reset()
+  }
+
   render(){
     console.log("Hago Render")
     return (
@@ -166,10 +176,10 @@ export default class ListPublication extends Component {
           <NotificationContainer/>
         </Segment>
         <Form reply inverted>
-              <h2 className=""> New Publication </h2>
-              <h3 className=""> Title </h3>
+              <h2 className="" style={styles.publication2}> New Publication </h2>
+              <h3 className="" style={styles.publication2}> Title </h3>
               <Form.TextArea onInput={(e, { value }) =>this.registryTitle(value)}/>
-              <h3 className=""> Text </h3>
+              <h3 className="" style={styles.publication2}> Text </h3>
               <Form.TextArea onInput={(e, { value }) =>this.registryReply(value)}/>
               <Button content='Confirm' labelPosition='left' icon='edit' color= 'instagram' onClick ={ ()=> this.postPublication() } />
         </Form>

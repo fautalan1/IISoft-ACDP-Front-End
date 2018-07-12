@@ -44,7 +44,8 @@ export default class PublicationComentaries extends Component {
                     date            :  "3918-07-22T03:00:00Z"
                   }
     
-    this.comentariesService.postNewComentary(aReply).then(res =>{this.setState({commentaries: []})})
+    this.comentariesService.postNewComentary(aReply).then(res =>{ this.resetForm()
+                                                                  this.setState({commentaries: []})})
   }
  
   ///*** METHODOS PROPIOS */
@@ -72,6 +73,11 @@ export default class PublicationComentaries extends Component {
   changePerfil=(userPerfil)=>{
     let servi =new UserService()
     servi.setUserPerfil(userPerfil)
+  }
+
+  resetForm = () =>{
+    this.reply        = ""
+    document.getElementsByClassName('reply inverted').item(1).reset()
   }
 
   /* Arma el codigo html con todos los comentarios */
